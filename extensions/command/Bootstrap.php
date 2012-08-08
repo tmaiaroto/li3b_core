@@ -29,10 +29,18 @@ class Bootstrap extends \lithium\console\Command {
 		
 		Bootstrap::installDependencies($packageName);
 		
+		$coreConfig = Libraries::get('li3b_core');
 		$appConfig = Libraries::get(true);
 		$appRoot = $appConfig['path'];
+		$appWebroot = $appRoot . '/webroot';
+		$packageWebroot = $appRoot . '/libraries/' . $packageName . '/webroot';
 		$libraryAddFile = $appRoot . '/config/bootstrap/libraries/' . $packageName . '.php';
 		$configOptions = isset(static::$_packageConfig['configuration']) ? static::$_packageConfig['configuration']:array();
+		
+		// Symlink the webroot if the configuration for li3b_core says to.
+		if($coreConfig['symlinkAssets'] && file_exists($packageWebroot)) {
+			system("(cd {$appWebroot} && ln -s {$packageWebroot} {$packageName})");
+		}
 		
 		if(!file_exists($libraryAddFile)) {
 			$fp = fopen($libraryAddFile, 'x+');

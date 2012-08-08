@@ -8,15 +8,15 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<?php 
-		echo $this->html->style(array('/_core/css/bootstrap.min.css', '/_core/css/bootstrap-responsive.min.css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css', '/_core/css/jquery/tipsy.css', '/_core/css/admin'), array('inline' => false));	
+		echo $this->html->style(array('/li3b_core/css/bootstrap.min.css', '/li3b_core/css/bootstrap-responsive.min.css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css', '/li3b_core/css/jquery/tipsy.css', '/li3b_core/css/admin'), array('inline' => false));	
 	?>
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script>!window.jQuery && document.write('<script src="/js/jquery/jquery-1.7.2.min.js"><\/script>')</script>	
+	<script>!window.jQuery && document.write('<script src="/li3b_core/js/jquery/jquery-1.7.2.min.js"><\/script>')</script>	
 	<?php
-		echo $this->html->script(array('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js', '/_core/js/jquery/jquery.tipsy.js', '/_core/js/tiny_mce/jquery.tinymce.js', '/_core/js/bootstrap.min.js', '/_core/js/tiny_mce/jquery.tinymce.js'), array('inline' => false));
+		echo $this->html->script(array('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js', '/li3b_core/js/jquery/jquery.tipsy.js', '/li3b_core/js/tiny_mce/jquery.tinymce.js', '/li3b_core/js/bootstrap.min.js', '/li3b_core/js/tiny_mce/jquery.tinymce.js'), array('inline' => false));
 	?>
 	<?php
 		echo $this->scripts();
@@ -43,7 +43,7 @@
 			
 			$('textarea.tinymce').tinymce({
 				// Location of TinyMCE script
-				script_url : '/_core/js/tiny_mce/tiny_mce.js',
+				script_url : '/li3b_core/js/tiny_mce/tiny_mce.js',
 				// General options
 				theme : "advanced",
 				plugins : "style,table,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,xhtmlxtras",
@@ -60,7 +60,7 @@
 				width: '675',
 				
 				// Example content CSS (should be your site CSS)
-				content_css : "/_core/css/content.css,/_core/css/content.css"
+				content_css : "/li3b_core/css/content.css,/li3b_core/css/content.css"
 			});
 		});
 	</script>

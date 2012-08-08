@@ -22,37 +22,43 @@
  * }}}
  */
 use lithium\util\Collection;
-
-Collection::formats('lithium\net\http\Media');
-
-/**
- * This filter is a convenience method which allows you to automatically route requests for static
- * assets stored within active plugins. For example, given a JavaScript file `bar.js` inside the
- * `li3_foo` plugin installed in an application, requests to `http://app/path/li3_foo/js/bar.js`
- * will be routed to `/path/to/app/libraries/plugins/li3_foo/webroot/js/bar.js` on the filesystem.
- * In production, it is recommended that you disable this filter in favor of symlinking each
- * plugin's `webroot` directory into your main application's `webroot` directory, or adding routing
- * rules in your web server's configuration.
- */
+use lithium\core\Libraries;
 use lithium\action\Dispatcher;
 use lithium\action\Response;
 use lithium\net\http\Media;
 
-Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
-	list($library, $asset) = explode('/', $params['request']->url, 2) + array("", "");
+$appConfig = Libraries::get('li3b_core');
+if(!$appConfig['symlinkAssets']) {
 
-	if ($asset && ($path = Media::webroot($library)) && file_exists($file = "{$path}/{$asset}")) {
-		return function() use ($file) {
-			$info = pathinfo($file);
-			$media = Media::type($info['extension']);
-			$content = (array) $media['content'];
+	Collection::formats('lithium\net\http\Media');
 
-			return new Response(array(
-				'headers' => array('Content-type' => reset($content)),
-				'body' => file_get_contents($file)
-			));
-		};
-	}
-	return $chain->next($self, $params, $chain);
-});
+	/**
+	 * This filter is a convenience method which allows you to automatically route requests for static
+	 * assets stored within active plugins. For example, given a JavaScript file `bar.js` inside the
+	 * `li3_foo` plugin installed in an application, requests to `http://app/path/li3_foo/js/bar.js`
+	 * will be routed to `/path/to/app/libraries/plugins/li3_foo/webroot/js/bar.js` on the filesystem.
+	 * In production, it is recommended that you disable this filter in favor of symlinking each
+	 * plugin's `webroot` directory into your main application's `webroot` directory, or adding routing
+	 * rules in your web server's configuration.
+	 */
+
+	Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
+		list($library, $asset) = explode('/', $params['request']->url, 2) + array("", "");
+
+		if ($asset && ($path = Media::webroot($library)) && file_exists($file = "{$path}/{$asset}")) {
+			return function() use ($file) {
+				$info = pathinfo($file);
+				$media = Media::type($info['extension']);
+				$content = (array) $media['content'];
+
+				return new Response(array(
+					'headers' => array('Content-type' => reset($content)),
+					'body' => file_get_contents($file)
+				));
+			};
+		}
+		return $chain->next($self, $params, $chain);
+	});
+
+}
 ?>
