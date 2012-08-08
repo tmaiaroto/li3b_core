@@ -13,8 +13,8 @@
 if((isset($message)) && (!empty($message))) {
 	
 	// Alternatively, you may wish to put these within the head section.
-	echo $this->html->script('jquery/jquery.pnotify.min.js');
-	echo $this->html->style('jquery/jquery.pnotify.default.css');
+	echo $this->html->script('/li3b_core/js/jquery/jquery.pnotify.min.js');
+	echo $this->html->style('/li3b_core/css/jquery/jquery.pnotify.default.css');
 	?>
 	<script type="text/javascript">
 	jQuery(document).ready(function() {
