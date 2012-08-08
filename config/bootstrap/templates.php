@@ -107,7 +107,7 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 		 * sense to share for any other purpose whereas layouts are definitely
 		 * something another action can take advantage of.
 		 */
-		if(isset($libConfig['useBootstrapLayout']) && $libConfig['useBootstrapLayout'] === true) {
+		if(isset($libConfig['useBootstrapLayout']) && (bool)$libConfig['useBootstrapLayout'] === true) {
 			$paths['layout'] = array(
 				$appPath . '/views/_libraries/' . $params['params']['library'] . '/layouts/{:layout}.{:type}.php',
 				$appPath . '/libraries/li3b_core/views/layouts/{:layout}.{:type}.php',
