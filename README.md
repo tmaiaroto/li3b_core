@@ -12,3 +12,11 @@ Also keep in mind that there may be other configuration
 conflicts between your application and Lithium Bootstrap
 and also other libraries that have been built for use
 with Lithium Bootstrap.
+
+### Dependencies
+
+This library relies on li3_flash_messages:
+https://github.com/michaelhue/li3_flash_message
+
+Of course, it also requires the Lithium framework:
+https://github.com/UnionOfRAD/lithium

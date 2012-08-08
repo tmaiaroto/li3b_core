@@ -29,9 +29,11 @@ class Bootstrap extends \lithium\console\Command {
 		
 		Bootstrap::installDependencies($packageName);
 		
-		$appRoot = dirname(dirname(__DIR__));
+		$appConfig = Libraries::get(true);
+		$appRoot = $appConfig['path'];
 		$libraryAddFile = $appRoot . '/config/bootstrap/libraries/' . $packageName . '.php';
-
+		$configOptions = isset(static::$_packageConfig['configuration']) ? static::$_packageConfig['configuration']:array();
+		
 		if(!file_exists($libraryAddFile)) {
 			$fp = fopen($libraryAddFile, 'x+');
 			
@@ -40,19 +42,22 @@ class Bootstrap extends \lithium\console\Command {
 			fwrite($fp, 'use lithium\core\Libraries;');
 			fwrite($fp, "\n");
 			fwrite($fp, "\n");
-			fwrite($fp, "Libraries::add('{$packageName}');\n");
-			fwrite($fp, "\n");
+			fwrite($fp, "Libraries::add('{$packageName}', ");
+				fwrite($fp, var_export($configOptions, true));
+			fwrite($fp, ");\n");
 			fwrite($fp, '?>');
 			
 			fclose($fp);
+		} else {
+			$working = Libraries::get($packageName);
+			echo "This library was already installed; it appears to ";
+			echo $working ? "be working.":" NOT be working.";
+			echo PHP_EOL;
+			return;
 		}
 		
 		if(file_exists($libraryAddFile)) {
-			if(Libraries::get($packageName)) {
-				echo "Installation successful!" . PHP_EOL;
-			} else {
-				echo "Installation failed. The library was added but it does not seem to load." . PHP_EOL;
-			}
+			echo "Installation successful!" . PHP_EOL;
 		} else {
 			echo "Installation failed. Could not write the file which adds the library with Libraries::add(). You can try manually adding the library." . PHP_EOL;
 		}
@@ -66,7 +71,8 @@ class Bootstrap extends \lithium\console\Command {
 		
 		static::_getPackageConfig($packageName);
 		
-		$appRoot = dirname(dirname(__DIR__));
+		$appConfig = Libraries::get(true);
+		$appRoot = $appConfig['path'];
 		//$git = '/usr/bin/git';
 		$git = 'git';
 		
@@ -95,10 +101,13 @@ class Bootstrap extends \lithium\console\Command {
 	}
 	
 	private static function _getPackageConfig($packageName=null) {
-		if($libConfig = Libraries::get($packageName)) {
-			$packageConfigPath = $libConfig['path'] . '/config/config.ini';
-			
-			$packageConfig = file_exists($packageConfigPath) ? parse_ini_file($packageConfigPath, true):false;
+		$appConfig = Libraries::get(true);
+		$appRoot = $appConfig['path'];
+		
+		$packageConfigFile = $appRoot . '/libraries/' . $packageName . '/config/config.ini';
+		
+		if(file_exists($packageConfigFile)) {
+			$packageConfig = parse_ini_file($packageConfigFile, true);
 			if(!$packageConfig) {
 				return false;
 			}
