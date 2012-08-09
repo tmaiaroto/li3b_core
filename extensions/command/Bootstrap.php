@@ -123,7 +123,7 @@ class Bootstrap extends \lithium\console\Command {
 		}
 		
 		$appRoot = $this->_appConfig['path'];
-		$appWebroot = $this->appConfig['webroot'];
+		$appWebroot = $this->_appConfig['webroot'];
 		$packageRoot = $appRoot . '/libraries/' . $packageName;
 		if(!file_exists($packageRoot)) {
 			echo "Installing...\n";
