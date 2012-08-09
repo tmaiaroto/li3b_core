@@ -126,6 +126,7 @@ class Bootstrap extends \lithium\console\Command {
 		$appWebroot = $this->appConfig['webroot'];
 		$packageRoot = $appRoot . '/libraries/' . $packageName;
 		if(!file_exists($packageRoot)) {
+			echo "Installing...\n";
 			$command = 'clone ' . $this->_packages[$packageName] . ' libraries/' . $packageName;
 			system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
 			// Hey, this library may have submodules of its own...Get them.
