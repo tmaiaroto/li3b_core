@@ -58,6 +58,7 @@ class Bootstrap extends \lithium\console\Command {
 		$appRoot = $appConfig['path'];
 		$appWebroot = $appRoot . '/webroot';
 		
+		$git = 'git';
 		$command = 'clone ' . static::$_packages[$packageName] . ' libraries/' . $packageName;
 		system("/usr/bin/env -i HOME={$appRoot} {$git} {$command} 2>&1");
 		// Hey, this library may have submodules of its own...Get them.
