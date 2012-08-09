@@ -59,14 +59,19 @@ class Bootstrap extends \lithium\console\Command {
 		$appWebroot = $appRoot . '/webroot';
 		
 		$git = 'git';
-		$command = 'clone ' . static::$_packages[$packageName] . ' libraries/' . $packageName;
-		system("/usr/bin/env -i HOME={$appRoot} {$git} {$command} 2>&1");
-		// Hey, this library may have submodules of its own...Get them.
-		$packageRoot = $appRoot . '/libraries/' . $packageName;
-		$command = 'submodule update --init --recursive';
-		system("/usr/bin/env -i HOME={$appRoot} {$git} {$command} 2>&1");
 		
-		if(!file_exists($appRoot . '/libraries/' . $packageName)) {
+		$packageRoot = $appRoot . '/libraries/' . $packageName;
+		if(!file_exists($packageRoot)) {
+			$command = 'clone ' . static::$_packages[$packageName] . ' libraries/' . $packageName;
+			system("/usr/bin/env -i HOME={$appRoot} {$git} {$command} 2>&1");
+			// Hey, this library may have submodules of its own...Get them.
+			$command = 'submodule update --init --recursive';
+			system("/usr/bin/env -i HOME={$appRoot} {$git} {$command} 2>&1");
+		} else {
+			echo "This package appears to already have been installed." . PHP_EOL;
+		}
+		
+		if(!file_exists($packageRoot)) {
 			echo "Failed to retrieve the package/library." . PHP_EOL;
 			exit();
 		}
@@ -135,15 +140,11 @@ class Bootstrap extends \lithium\console\Command {
 			exit();
 		}
 		
-		// Get all of the packages from the repo ini files.
-		// See if this package even exists.
-		static::_collectPackages();
-		if(!in_array($packageName, array_keys(static::$_packages))) {
-			echo "No package found by that name." . PHP_EOL;
+		// See if this package even exists and while we're at it, get it's config.
+		if(!static::_getPackageConfig($packageName)) {
+			echo "No package found by that name or it has no dependencies." . PHP_EOL;
 			exit();
 		}
-		
-		static::_getPackageConfig($packageName);
 		
 		$appConfig = Libraries::get(true);
 		$appRoot = $appConfig['path'];
@@ -238,7 +239,10 @@ class Bootstrap extends \lithium\console\Command {
 			$packageConfig += $defaults;
 			
 			self::$_packageConfig = $packageConfig;
+			return true;
 		}
+		
+		return false;
 	}
 	
 	/**
