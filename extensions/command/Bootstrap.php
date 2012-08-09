@@ -49,7 +49,6 @@ class Bootstrap extends \lithium\console\Command {
 		// Get all of the packages from the repo ini files.
 		// See if this package even exists.
 		static::_collectPackages();
-		var_export(static::$_packages); exit();
 		if(!in_array($packageName, array_keys(static::$_packages))) {
 			echo "No package found by that name." . PHP_EOL;
 			exit();
