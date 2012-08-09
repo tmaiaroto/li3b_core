@@ -65,10 +65,11 @@ class Bootstrap extends \lithium\console\Command {
 		
 		$libraries = array();
 		$filesAndDirectories = scandir($appRoot . '/libraries');
-		$notToPull = array('.', '..', 'li3b_core', 'li3_flash_message', 'lithium');
+		$notToPull = array('.', '..', '.DS_Store', 'empty', 'li3b_core', 'li3_flash_message', 'lithium');
 		foreach($filesAndDirectories as $entry) {
-			if(is_dir($entry) && !in_array($entry, $notToPull)) {
+			if(!in_array($entry, $notToPull)) {
 				$libraries[] = $entry;
+				echo $entry;
 			}
 		}
 		
