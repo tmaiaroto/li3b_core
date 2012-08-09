@@ -18,14 +18,82 @@ class Bootstrap extends \lithium\console\Command {
 	 * 
 	 * @var array
 	 */
-	private static $_packageConfig;
+	private $_packageConfig;
 	
 	/**
 	 * A list of all packages (libraries) and their repository locations.
 	 * 
 	 * @var array
 	 */
-	private static $_packages;
+	private $_packages;
+	
+	private $_gitCommand;
+	
+	private $_appConfig;
+	
+	public function init() {
+		// TODO: change this based on some configuration file somewhere...
+		// Or look for the command in various places.
+		$this->_gitCommand = 'git';
+		
+		$this->_appConfig = Libraries::get(true);
+		$this->appConfig['webroot'] = $this->_appConfig['path'] . '/webroot';
+		
+		parent::init();
+	}
+	
+	/**
+	 *  Updates a single package/library or all of them.
+	 * 
+	 * @param $packageName The name of the library/plugin to update (or none if updating all)
+	 * @return void
+	 */
+	public function update($packageName=null) {
+		$appRoot = $this->_appConfig['path'];
+		
+		// These are submodules...If one is provided, just update all submodules.
+		// Or if "submodules" is passed (this means there cannot be a library named "submodules).
+		$submodules = array('li3b_core', 'lithium', 'li3_flash_message', 'submodules');
+		if(in_array($packageName, $submodules)) {
+			echo "Updating Lithium Bootstrap and other submodules...\n";
+			$command = 'submodule update --recursive';
+			system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
+			$this->clear();
+			echo "Update complete!\n";
+			exit();
+		}
+		
+		$libraries = array();
+		$filesAndDirectories = scandir($appRoot . '/libraries');
+		$notToPull = array('.', '..', 'li3b_core', 'li3_flash_message', 'lithium');
+		foreach($filesAndDirectories as $entry) {
+			if(is_dir($entry) && !in_array($entry, $notToPull)) {
+				$libraries[] = $entry;
+			}
+		}
+		
+		if(!empty($packageName) && !in_array($packageName, $libraries)) {
+			echo "No package/library found by that name.\n";
+			exit();
+		}
+		
+		if(in_array($packageName, $libraries)) {
+			$libraries = array($packageName);
+		}
+		
+		// Update the packages/libraries.
+		foreach($libraries as $library) {
+			$command = 'pull';
+			$libraryRoot = $appRoot . '/libraries/' . $library;
+			system("/usr/bin/env -i HOME={$libraryRoot} {$this->_gitCommand} {$command} 2>&1");
+			// Maybe it has some submodules of its own...
+			$command = 'submodule update --recursive';
+			system("/usr/bin/env -i HOME={$libraryRoot} {$this->_gitCommand} {$command} 2>&1");
+			$this->clear();
+		}
+		
+		echo "Update complete!\n";
+	}
 	
 	/**
 	 * Installs a package/library from the Lithium Bootstrap repository.
@@ -40,39 +108,36 @@ class Bootstrap extends \lithium\console\Command {
 	 * @param $packageName The name of the library/plugin to install.
 	 * @return void
 	*/
-	public static function install($packageName=null) {
+	public function install($packageName=null) {
 		if(empty($packageName)) {
-			echo "No package name provided." . PHP_EOL;
+			echo "No package name provided.\n";
 			exit();
 		}
 		
 		// Get all of the packages from the repo ini files.
 		// See if this package even exists.
-		static::_collectPackages();
-		if(!in_array($packageName, array_keys(static::$_packages))) {
-			echo "No package found by that name." . PHP_EOL;
+		$this->_collectPackages();
+		if(!in_array($packageName, array_keys($this->_packages))) {
+			echo "No package found by that name.\n";
 			exit();
 		}
 		
-		$appConfig = Libraries::get(true);
-		$appRoot = $appConfig['path'];
-		$appWebroot = $appRoot . '/webroot';
-		
-		$git = 'git';
-		
+		$appRoot = $this->_appConfig['path'];
+		$appWebroot = $this->appConfig['webroot'];
 		$packageRoot = $appRoot . '/libraries/' . $packageName;
 		if(!file_exists($packageRoot)) {
-			$command = 'clone ' . static::$_packages[$packageName] . ' libraries/' . $packageName;
-			system("/usr/bin/env -i HOME={$appRoot} {$git} {$command} 2>&1");
+			$command = 'clone ' . $this->_packages[$packageName] . ' libraries/' . $packageName;
+			system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
 			// Hey, this library may have submodules of its own...Get them.
 			$command = 'submodule update --init --recursive';
-			system("/usr/bin/env -i HOME={$appRoot} {$git} {$command} 2>&1");
+			system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
+			$this->clear();
 		} else {
-			echo "This package appears to already have been installed." . PHP_EOL;
+			echo "This package appears to already have been installed.\n";
 		}
 		
 		if(!file_exists($packageRoot)) {
-			echo "Failed to retrieve the package/library." . PHP_EOL;
+			echo "Failed to retrieve the package/library.\n";
 			exit();
 		}
 		
@@ -81,10 +146,11 @@ class Bootstrap extends \lithium\console\Command {
 		$coreConfig = Libraries::get('li3b_core');
 		$packageWebroot = $appRoot . '/libraries/' . $packageName . '/webroot';
 		$libraryAddFile = $appRoot . '/config/bootstrap/libraries/' . $packageName . '.php';
-		$configOptions = isset(static::$_packageConfig['configuration']) ? static::$_packageConfig['configuration']:array();
+		$configOptions = isset($this->_packageConfig['configuration']) ? $this->_packageConfig['configuration']:array();
 		
 		// Symlink the webroot if the configuration for li3b_core says to.
 		if($coreConfig['symlinkAssets'] && file_exists($packageWebroot)) {
+			echo "Creating symlinks for assets...\n\n";
 			system("(cd {$appWebroot} && ln -s {$packageWebroot} {$packageName})");
 		}
 		
@@ -105,15 +171,14 @@ class Bootstrap extends \lithium\console\Command {
 		} else {
 			$working = Libraries::get($packageName);
 			echo "This library was already installed; it appears to ";
-			echo $working ? "be working.":" NOT be working.";
-			echo PHP_EOL;
+			echo $working ? "be working.":" NOT be working.\n";
 			return;
 		}
 		
 		if(file_exists($libraryAddFile)) {
-			echo "Installation successful!" . PHP_EOL;
+			echo "Installation successful!\n";
 		} else {
-			echo "Installation failed. Could not write the file which adds the library with Libraries::add(). You can try manually adding the library." . PHP_EOL;
+			echo "Installation failed. Could not write the file which adds the library with Libraries::add(). You can try manually adding the library.\n";
 		}
 	}
 	
@@ -134,46 +199,40 @@ class Bootstrap extends \lithium\console\Command {
 	 * 
 	 * @param string $packageName The package/library name from a Lithium Bootstrap plugin repository.
 	 */
-	public static function installDependencies($packageName=null) {
+	public function installDependencies($packageName=null) {
 		if(empty($packageName)) {
-			echo "No package name provided." . PHP_EOL;
+			echo "No package name provided.\n";
 			exit();
 		}
 		
 		// See if this package even exists and while we're at it, get it's config.
-		if(!static::_getPackageConfig($packageName)) {
-			echo "No package found by that name or it has no dependencies." . PHP_EOL;
+		if(!$this->_getPackageConfig($packageName)) {
+			echo "No package found by that name or it has no dependencies.\n";
 			exit();
 		}
 		
-		$appConfig = Libraries::get(true);
-		$appRoot = $appConfig['path'];
-		//$git = '/usr/bin/git';
-		$git = 'git';
+		$appRoot = $this->_appConfig['path'];
 		
 		echo "Getting the dependencies for this package...\n\n";
-		if(static::$_packageConfig['dependencies']) {
-			foreach(static::$_packageConfig['dependencies'] as $lib => $repo) {
-				// If we did this, then we would need to include -f and that would add the plugins to the main repo.
-				// We don't want that.
-				// $command = 'submodule add ' . $repo . ' libraries/' . $lib;
-				// system("/usr/bin/env -i HOME={$appRoot} {$git} {$command} 2>&1");
-				// So instead, clone them.
-				
+		if($this->_packageConfig['dependencies']) {
+			foreach($this->_packageConfig['dependencies'] as $lib => $repo) {
+				// Clone libraries instead of adding as submodules.
+				// This will prevent them from ending up in the main repository.
+				// TODO: Think about a flag option for making everything a submodule...
 				if(file_exists($appRoot . '/libraries/' . $lib)) {
 					// TODO: Read .git/config files and check for this.
 					echo "It seems that {$lib} already exists. Please ensure that is it compatible with or is:\n {$repo}\n";
 				} else {
 					$command = 'clone ' . $repo . ' libraries/' . $lib;
-					system("/usr/bin/env -i HOME={$appRoot} {$git} {$command} 2>&1");
+					system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
 					// Hey, this library may have submodules of its own...Get them.
 					$packageRoot = $appRoot . '/libraries/' . $packageName;
 					$command = 'submodule update --init --recursive';
-					system("/usr/bin/env -i HOME={$packageRoot} {$git} {$command} 2>&1");
+					system("/usr/bin/env -i HOME={$packageRoot} {$this->_gitCommand} {$command} 2>&1");
+					$this->clear();
 				}
 			}
-			echo "\nAll dependencies have been installed.\n";
-			echo PHP_EOL;
+			echo "\nAll dependencies have been installed.\n\n";
 		}
 		
 	}
@@ -193,7 +252,7 @@ class Bootstrap extends \lithium\console\Command {
 	 * 
 	 * @param string $packageName The package/library name from a Lithium Bootstrap plugin repository.
 	 */
-	public static function configurePackage($packageName=null) {
+	public function configurePackage($packageName=null) {
 		// TODO: move some code from install() down here.
 		// This allows libraries to be configured again without going through
 		// the entire installation process again (which has checks to not clone
@@ -207,7 +266,7 @@ class Bootstrap extends \lithium\console\Command {
 	 * Searches the repositories for plugins.
 	 * 
 	 */
-	public static function search($query=null) {
+	public function search($query=null) {
 	}
 	
 	/**
@@ -221,10 +280,8 @@ class Bootstrap extends \lithium\console\Command {
 	 * @param string $packageName
 	 * @return boolean
 	 */
-	private static function _getPackageConfig($packageName=null) {
-		$appConfig = Libraries::get(true);
-		$appRoot = $appConfig['path'];
-		
+	private function _getPackageConfig($packageName=null) {
+		$appRoot = $this->_appConfig['path'];
 		$packageConfigFile = $appRoot . '/libraries/' . $packageName . '/config/config.ini';
 		
 		if(file_exists($packageConfigFile)) {
@@ -238,7 +295,7 @@ class Bootstrap extends \lithium\console\Command {
 			);
 			$packageConfig += $defaults;
 			
-			self::$_packageConfig = $packageConfig;
+			$this->_packageConfig = $packageConfig;
 			return true;
 		}
 		
@@ -263,9 +320,8 @@ class Bootstrap extends \lithium\console\Command {
 	 * contain unique names for packages.
 	 * 
 	 */
-	private static function _collectPackages() {
-		$appConfig = Libraries::get(true);
-		$appRoot = $appConfig['path'];
+	private function _collectPackages() {
+		$appRoot = $this->_appConfig['path'];
 		$appRepoPath = $appRoot . '/_repos';
 		$coreRepoPath = $appRoot . '/libraries/li3b_core/_repos';
 		
@@ -291,8 +347,7 @@ class Bootstrap extends \lithium\console\Command {
 			}
 		}
 		
-		static::$_packages = $packageList;
-		
+		$this->_packages = $packageList;
 	}
 	
 }
