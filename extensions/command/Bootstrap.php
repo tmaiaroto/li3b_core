@@ -69,7 +69,6 @@ class Bootstrap extends \lithium\console\Command {
 		foreach($filesAndDirectories as $entry) {
 			if(!in_array($entry, $notToPull)) {
 				$libraries[] = $entry;
-				echo $entry;
 			}
 		}
 		
@@ -90,7 +89,8 @@ class Bootstrap extends \lithium\console\Command {
 			// Maybe it has some submodules of its own...
 			$command = 'submodule update --recursive';
 			system("/usr/bin/env -i HOME={$libraryRoot} {$this->_gitCommand} {$command} 2>&1");
-			$this->clear();
+			echo $this->nl(2);
+			//$this->clear();
 		}
 		
 		echo "Update complete!\n";
