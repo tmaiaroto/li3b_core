@@ -49,6 +49,7 @@ class Bootstrap extends \lithium\console\Command {
 		// Get all of the packages from the repo ini files.
 		// See if this package even exists.
 		static::_collectPackages();
+		var_export(static::$_packages); exit();
 		if(!in_array($packageName, array_keys(static::$_packages))) {
 			echo "No package found by that name." . PHP_EOL;
 			exit();
@@ -267,7 +268,7 @@ class Bootstrap extends \lithium\console\Command {
 		$packageList = array();
 		// Add packages from li3b_core.
 		foreach(glob($coreRepoPath . '/*.ini') as $repoFile) {
-			$packages = parse_ini_file($repoFile);
+			$packages = parse_ini_file($repoFile, true);
 			foreach($packages as $package => $config) {
 				if(isset($config['repo'])) {
 					$packageList[$package] = $config['repo'];
@@ -277,7 +278,7 @@ class Bootstrap extends \lithium\console\Command {
 		
 		// Add packages from any repos that the main application may have added.
 		foreach(glob($appRepoPath . '/*.ini') as $repoFile) {
-			$packages = parse_ini_file($repoFile);
+			$packages = parse_ini_file($repoFile, true);
 			foreach($packages as $package => $config) {
 				// If the repo key was set and if we don't already have this package.
 				if(isset($config['repo']) && !in_array($package, array_keys($packageList))) {
