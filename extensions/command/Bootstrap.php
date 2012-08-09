@@ -31,15 +31,15 @@ class Bootstrap extends \lithium\console\Command {
 	
 	private $_appConfig;
 	
-	public function init() {
+	protected function _init() {
 		// TODO: change this based on some configuration file somewhere...
 		// Or look for the command in various places.
 		$this->_gitCommand = 'git';
 		
 		$this->_appConfig = Libraries::get(true);
-		$this->appConfig['webroot'] = $this->_appConfig['path'] . '/webroot';
+		$this->_appConfig['webroot'] = $this->_appConfig['path'] . '/webroot';
 		
-		parent::init();
+		parent::_init();
 	}
 	
 	/**
