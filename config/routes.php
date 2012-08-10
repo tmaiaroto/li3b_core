@@ -38,11 +38,11 @@ Dispatcher::config(array(
  * Pass-through routes for admin requests.
  * Both /admin and /admin/page Will take the user to the admin dashboard.
  */
-Router::connect("/admin", array('admin' => true, 'library' => 'li3b_core', 'controller' => 'pages', 'action' => 'view', 'args' => array()), array('continue' => true, 'persist' => array(
-	'controller', 'admin', 'library'
+Router::connect("/admin", array('admin' => true, 'controller' => 'pages', 'action' => 'view', 'args' => array()), array('continue' => true, 'persist' => array(
+	'controller', 'admin'
 )));
 Router::connect("/admin/{:args}", array('admin' => true), array('continue' => true, 'persist' => array(
-	'controller', 'admin', 'library'
+	'controller', 'admin'
 )));
 
 Router::connect("/admin/plugin/{:library}", array('admin' => true, 'library' => 'li3b_core', 'controller' => 'pages', 'action' => 'view', 'args' => array()), array('continue' => true, 'persist' => array(
