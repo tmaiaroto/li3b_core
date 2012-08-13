@@ -156,6 +156,11 @@ class Bootstrap extends \lithium\console\Command {
 			system("(cd {$appWebroot} && ln -s {$packageWebroot} {$packageName})");
 		}
 		
+		// Make sure the directory exists.
+		if(!file_exists($appRoot . '/config/bootstrap/libraries')) {
+			mkdir($appRoot . '/config/bootstrap/libraries', 0777, true);
+		}
+		
 		if(!file_exists($libraryAddFile)) {
 			$fp = fopen($libraryAddFile, 'x+');
 			
@@ -351,6 +356,22 @@ class Bootstrap extends \lithium\console\Command {
 		
 		$this->_packages = $packageList;
 	}
+	
+	/**
+	 * Sets up connections for all other libraries to use.
+	 * TODO: Evolve this into a connection wizard.
+	 */
+	public function setupConnections() {
+		$appRoot = $this->_appConfig['path'];
+		
+		// Make sure the directory exists.
+		if(!file_exists($appRoot . '/config/bootstrap/connections')) {
+			mkdir($appRoot . '/config/bootstrap/connections', 0777, true);
+		}
+		
+		
+	}
+
 	
 }
 ?>

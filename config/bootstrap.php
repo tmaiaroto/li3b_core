@@ -81,6 +81,14 @@ require __DIR__ . '/bootstrap/logging.php';
 // require __DIR__ . '/bootstrap/menu.php';
 
 /**
+ * The connections file includes various database connection configurations
+ * from the main application's config/connections directory. To allow for
+ * a flexible configuration without li3b_core making any assumptions.
+ * Connection configurations are, of course, completely optional.
+ */
+require __DIR__ . '/bootstrap/connections.php';
+
+/**
  * Last, but not least, the template override filter.
  * It allows you to override any library's templates with your own.
  * This way, you can take any given library that may contain the 
