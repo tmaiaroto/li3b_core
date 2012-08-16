@@ -5,16 +5,6 @@
     Description:
         Various admin styles not covered by Twitter Bootstrap.
 */
-
-.no-thumbnail {
-	background: #ccc;
-	width: 240px;
-	height: 160px;
-	display: block;
-	color: #fff;
-	padding: 10px;
-}
-
 div.pagination-condensed {
 	margin: 0px;
 }

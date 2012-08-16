@@ -34,10 +34,41 @@ use lithium\core\Libraries;
  * 
 */
 
+/**
+ * But first, we'll add a default connection.
+ * MongoDB makes the most sense here because it often does not
+ * require a username and password. Lithium Bootstrap can be
+ * used with any database, but MongoDB is the preferred database.
+ */
+Connections::add(
+	'li3b_mongodb', array(
+		'production' => array(
+			'type' => 'MongoDb',
+			'host' => 'localhost',
+			'database' => 'li3bootstrap'
+		),
+		'development' => array(
+			'type' => 'MongoDb',
+			'host' => 'localhost',
+			'database' => 'li3bootstrap_dev'
+		),
+		'test' => array(
+			'type' => 'database', 
+			'adapter' => 'MongoDb', 
+			'database' => 'li3bootstrap_test', 
+			'host' => 'localhost'
+		)
+	)
+);
+
 $appConfig =  Libraries::get(true);
 $connd = $appConfig['path'] . '/config/bootstrap/connections/*.php';
+$conndFiles = glob($connd);
+if(!empty($conndFiles)) {
+	asort($conndFiles);
+}
 
-foreach (asort(glob($connd)) as $filename) {
+foreach ($conndFiles as $filename) {
 	include $filename;
 }
 ?>
