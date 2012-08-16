@@ -1,5 +1,6 @@
 <?php
 use lithium\core\Libraries;
+use lithium\data\Connections;
 
 /**
  * This includes all connection configurations added in the `config/connections`
