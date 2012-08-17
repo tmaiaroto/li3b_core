@@ -85,10 +85,10 @@ class Bootstrap extends \lithium\console\Command {
 		foreach($libraries as $library) {
 			$command = 'pull';
 			$libraryRoot = $appRoot . '/libraries/' . $library;
-			system("/usr/bin/env -i HOME={$libraryRoot} {$this->_gitCommand} {$command} 2>&1");
+			system("/usr/bin/env -i HOME={$appRoot} (cd {$libraryRoot} && {$this->_gitCommand} {$command}) 2>&1");
 			// Maybe it has some submodules of its own...
 			$command = 'submodule update --recursive';
-			system("/usr/bin/env -i HOME={$libraryRoot} {$this->_gitCommand} {$command} 2>&1");
+			system("/usr/bin/env -i HOME={$appRoot} (cd {$libraryRoot} && {$this->_gitCommand} {$command}) 2>&1");
 			echo $this->nl(2);
 			//$this->clear();
 		}
