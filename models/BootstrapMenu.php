@@ -10,7 +10,7 @@ class BootstrapMenu extends \lithium\core\StaticObject {
 	*/
 	static $static_menus = array(
 		'admin' => array(
-			'm1_dashboard' => array(
+			'_m1_dashboard' => array(
 				'title' => 'Dashboard',
 				'url' => '/admin',
 				'options' => array()
