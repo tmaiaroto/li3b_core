@@ -53,31 +53,36 @@ class Bootstrap extends \lithium\console\Command {
 	 */
 	public function update($packageName=null) {
 		$appRoot = $this->_appConfig['path'];
-		// If using li3_boostrap, this will update the li3b_core submodule.
-		system("{$this->_gitCommand} pull 2>&1");
 		
-		// These are submodules...If one is provided, just update all submodules.
-		// Or if "submodules" is passed (this means there cannot be a library named "submodules).
-		$submodules = array('li3b_core', 'lithium', 'li3_flash_message', 'submodules');
-		if(in_array($packageName, $submodules)) {
-			echo "Updating Lithium Bootstrap and other submodules...\n";
-			// Submodules
+		/*
+		 * If no package name was passed, update everything.
+		 * First, the main application. If using li3_bootstrap, this updates
+		 * the li3b_core submodule to the version li3_bootstrap has.
+		 * ...If it hasn't been branched...
+		 */
+		if(empty($packageName)) {
+			echo "Updating your main application...\n";
+			system("{$this->_gitCommand} pull 2>&1");
+			echo $this->nl();
+			
+			echo "Updating submodules...\n";
 			system("{$this->_gitCommand} submodule update --recursive 2>&1");
-			$this->clear();
+			echo $this->nl();
+			
 			echo "Update complete!\n";
 			exit();
 		}
 		
 		$libraries = array();
 		$filesAndDirectories = scandir($appRoot . '/libraries');
-		$notToPull = array('.', '..', '.DS_Store', 'empty', 'li3b_core', 'li3_flash_message', 'lithium');
+		$notToPull = array('.', '..', '.DS_Store', 'empty', 'README.md', 'li3b_core', 'li3_flash_message', 'lithium');
 		foreach($filesAndDirectories as $entry) {
 			if(!in_array($entry, $notToPull)) {
 				$libraries[] = $entry;
 			}
 		}
 		
-		if(!empty($packageName) && !in_array($packageName, $libraries)) {
+		if(!empty($packageName) && !in_array($packageName, $libraries) && $packageName != 'all') {
 			echo "No package/library found by that name.\n";
 			exit();
 		}
@@ -86,16 +91,19 @@ class Bootstrap extends \lithium\console\Command {
 			$libraries = array($packageName);
 		}
 		
-		// Update the packages/libraries.
+		// Update the packages/libraries that are git repositories.
 		foreach($libraries as $library) {
-			$command = 'pull';
 			$libraryRoot = $appRoot . '/libraries/' . $library;
-			system("(cd {$libraryRoot} && {$this->_gitCommand} {$command}) 2>&1");
-			// Maybe it has some submodules of its own...
-			$command = 'submodule update --recursive';
-			system("(cd {$libraryRoot} && {$this->_gitCommand} {$command}) 2>&1");
-			echo $this->nl(2);
-			//$this->clear();
+			if(file_exists($libraryRoot . '/.git')) {
+				$libDir = 'libraries/' . $library;
+				echo "Updating {$library}...\n";
+				system("(cd {$libDir} && {$this->_gitCommand} pull) 2>&1");
+				echo $this->nl();
+				echo "Updating submodules for {$library}...\n";
+				// Maybe it has some submodules of its own...
+				system("(cd {$libDir} && {$this->_gitCommand} submodule update --recursive) 2>&1");
+				echo $this->nl();
+			}
 		}
 		
 		echo "Update complete!\n";
