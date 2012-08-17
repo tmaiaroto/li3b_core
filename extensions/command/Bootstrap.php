@@ -39,6 +39,9 @@ class Bootstrap extends \lithium\console\Command {
 		$this->_appConfig = Libraries::get(true);
 		$this->_appConfig['webroot'] = $this->_appConfig['path'] . '/webroot';
 		
+		$appRoot = $this->_appConfig['path'];
+		system("/usr/bin/env -i HOME={$appRoot} > /dev/null 2>&1 &");
+		
 		parent::_init();
 	}
 	
@@ -50,8 +53,6 @@ class Bootstrap extends \lithium\console\Command {
 	 */
 	public function update($packageName=null) {
 		$appRoot = $this->_appConfig['path'];
-		system("/usr/bin/env -i HOME={$appRoot} > /dev/null 2>&1");
-		
 		// These are submodules...If one is provided, just update all submodules.
 		// Or if "submodules" is passed (this means there cannot be a library named "submodules).
 		$submodules = array('li3b_core', 'lithium', 'li3_flash_message', 'submodules');
@@ -131,7 +132,6 @@ class Bootstrap extends \lithium\console\Command {
 		$appRoot = $this->_appConfig['path'];
 		$appWebroot = $this->_appConfig['webroot'];
 		$packageRoot = $appRoot . '/libraries/' . $packageName;
-		system("/usr/bin/env -i HOME={$appRoot} > /dev/null 2>&1");
 		if(!file_exists($packageRoot)) {
 			echo "Installing...\n";
 			$command = 'clone ' . $this->_packages[$packageName] . ' libraries/' . $packageName;
@@ -225,8 +225,6 @@ class Bootstrap extends \lithium\console\Command {
 		}
 		
 		$appRoot = $this->_appConfig['path'];
-		system("/usr/bin/env -i HOME={$appRoot} > /dev/null 2>&1");
-		
 		echo "Getting the dependencies for this package...\n\n";
 		if($this->_packageConfig['dependencies']) {
 			foreach($this->_packageConfig['dependencies'] as $lib => $repo) {
