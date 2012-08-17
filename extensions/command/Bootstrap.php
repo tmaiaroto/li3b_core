@@ -56,6 +56,10 @@ class Bootstrap extends \lithium\console\Command {
 		$submodules = array('li3b_core', 'lithium', 'li3_flash_message', 'submodules');
 		if(in_array($packageName, $submodules)) {
 			echo "Updating Lithium Bootstrap and other submodules...\n";
+			// If using li3_boostrap, this will update the submodule commit number.
+			$command = 'pull';
+			system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
+			// Submodules
 			$command = 'submodule update --recursive';
 			system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
 			$this->clear();
