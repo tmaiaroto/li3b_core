@@ -50,6 +50,7 @@ class Bootstrap extends \lithium\console\Command {
 	 */
 	public function update($packageName=null) {
 		$appRoot = $this->_appConfig['path'];
+		system("/usr/bin/env -i HOME={$appRoot} > /dev/null 2>&1");
 		
 		// These are submodules...If one is provided, just update all submodules.
 		// Or if "submodules" is passed (this means there cannot be a library named "submodules).
@@ -58,10 +59,10 @@ class Bootstrap extends \lithium\console\Command {
 			echo "Updating Lithium Bootstrap and other submodules...\n";
 			// If using li3_boostrap, this will update the submodule commit number.
 			$command = 'pull';
-			system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
+			system("{$this->_gitCommand} {$command} 2>&1");
 			// Submodules
 			$command = 'submodule update --recursive';
-			system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
+			system("{$this->_gitCommand} {$command} 2>&1");
 			$this->clear();
 			echo "Update complete!\n";
 			exit();
@@ -130,13 +131,14 @@ class Bootstrap extends \lithium\console\Command {
 		$appRoot = $this->_appConfig['path'];
 		$appWebroot = $this->_appConfig['webroot'];
 		$packageRoot = $appRoot . '/libraries/' . $packageName;
+		system("/usr/bin/env -i HOME={$appRoot} > /dev/null 2>&1");
 		if(!file_exists($packageRoot)) {
 			echo "Installing...\n";
 			$command = 'clone ' . $this->_packages[$packageName] . ' libraries/' . $packageName;
-			system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
+			system("{$this->_gitCommand} {$command} 2>&1");
 			// Hey, this library may have submodules of its own...Get them.
 			$command = 'submodule update --init --recursive';
-			system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
+			system("{$this->_gitCommand} {$command} 2>&1");
 			$this->clear();
 		} else {
 			echo "This package appears to already have been installed.\n";
@@ -223,6 +225,7 @@ class Bootstrap extends \lithium\console\Command {
 		}
 		
 		$appRoot = $this->_appConfig['path'];
+		system("/usr/bin/env -i HOME={$appRoot} > /dev/null 2>&1");
 		
 		echo "Getting the dependencies for this package...\n\n";
 		if($this->_packageConfig['dependencies']) {
@@ -235,11 +238,11 @@ class Bootstrap extends \lithium\console\Command {
 					echo "It seems that {$lib} already exists. Please ensure that is it compatible with or is:\n {$repo}\n";
 				} else {
 					$command = 'clone ' . $repo . ' libraries/' . $lib;
-					system("/usr/bin/env -i HOME={$appRoot} {$this->_gitCommand} {$command} 2>&1");
+					system("{$this->_gitCommand} {$command} 2>&1");
 					// Hey, this library may have submodules of its own...Get them.
 					$packageRoot = $appRoot . '/libraries/' . $packageName;
 					$command = 'submodule update --init --recursive';
-					system("/usr/bin/env -i HOME={$packageRoot} {$this->_gitCommand} {$command} 2>&1");
+					system("{$this->_gitCommand} {$command} 2>&1");
 					$this->clear();
 				}
 			}
@@ -376,6 +379,5 @@ class Bootstrap extends \lithium\console\Command {
 		
 	}
 
-	
 }
 ?>
