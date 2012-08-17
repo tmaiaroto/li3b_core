@@ -279,7 +279,6 @@ class Bootstrap extends \lithium\console\Command {
 		// This also may become a sort of wizard...
 	}
 	
-	
 	/**
 	 * Searches the repositories for plugins.
 	 * 
