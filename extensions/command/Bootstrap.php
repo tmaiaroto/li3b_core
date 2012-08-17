@@ -40,7 +40,7 @@ class Bootstrap extends \lithium\console\Command {
 		$this->_appConfig['webroot'] = $this->_appConfig['path'] . '/webroot';
 		
 		$appRoot = $this->_appConfig['path'];
-		system("/usr/bin/env -i HOME={$appRoot} > /dev/null 2>&1 &");
+		// system("/usr/bin/env -i HOME={$appRoot} > /dev/null 2>&1 &");
 		
 		parent::_init();
 	}
