@@ -245,7 +245,6 @@ class Bootstrap extends \lithium\console\Command {
 			}
 			echo "\nAll dependencies have been installed.\n\n";
 		}
-		
 	}
 	
 	/**
