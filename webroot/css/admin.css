@@ -16,3 +16,7 @@ div.pagination-condensed ul li a {
 .input-span3 {
 	width: 192px;
 }
+
+textarea.editor-html {
+	width: 100%;
+}
