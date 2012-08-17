@@ -61,7 +61,7 @@ class Bootstrap extends \lithium\console\Command {
 		 * ...If it hasn't been branched...
 		 */
 		if(empty($packageName)) {
-			echo "Updating your main application...\n";
+			echo "Updating your main application (Note: you may need to manually run a `git pull` command)...\n";
 			system("{$this->_gitCommand} pull 2>&1");
 			echo $this->nl();
 			
