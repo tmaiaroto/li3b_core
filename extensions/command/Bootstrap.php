@@ -32,9 +32,9 @@ class Bootstrap extends \lithium\console\Command {
 	private $_appConfig;
 	
 	protected function _init() {
-		// TODO: change this based on some configuration file somewhere...
-		// Or look for the command in various places.
-		$this->_gitCommand = 'git';
+		$gitExec = array();
+		exec('which git', $gitExec);
+		$this->_gitCommand = (isset($gitExec[0]) && is_executable($gitExec[0])) ? $gitExec[0]:'git';
 		
 		$this->_appConfig = Libraries::get(true);
 		$this->_appConfig['webroot'] = $this->_appConfig['path'] . '/webroot';
