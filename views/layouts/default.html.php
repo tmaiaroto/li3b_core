@@ -37,5 +37,6 @@
 		<?php echo $this->content(); ?>
 		<?=$this->_render('element', 'footer', array(), array('library' => 'li3b_core')); ?>
 	</div><!--/.container-->
+	<?=$this->html->flash(); ?>
 </body>
 </html>

@@ -23,7 +23,8 @@
 				<span class="caret"></span>
 			</a>
 			<ul class="dropdown-menu">
-				<li><a href="#">Profile</a></li>
+				<li><?=$this->html->link('Settings', '/settings'); ?></li>
+				<li><?=$this->html->link('Profile', '/profile'); ?></li>
 				<li class="divider"></li>
 				<li><a href="/logout">Sign Out</a></li>
 			</ul>
