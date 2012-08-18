@@ -1,0 +1,10 @@
+/**
+ * Adds lines and numbers to the pre element.
+ * Set the pre color in CSS for the number color.
+ * Set the pre border-color in CSS for the line color.
+ * Set the starting line number by adding data-line="234" attribute to code element.
+ * Disable line numbering by setting data-line="-1"
+ * @author Ron Valstar (http://www.sjeiti.com/)
+ * @namespace Rainbow.linenumbers
+ * @requires Rainbow.js
+ */window.Rainbow&&!window.Rainbow.linenumbers&&(window.Rainbow.linenumbers=function(e){var t=!0,n,r;e.onHighlight(function(e){var i=parseInt,s=e.innerHTML.replace(/\r\n|\r/g,"\n").split("\n").length,o=e.getAttribute("data-line")<<0,u=o>=0,a=s===0?1:(Math.log(s)/2.303<<0)+1,f=s,l=e.parentNode,c=l.nodeName=="PRE",h=function(e){return e.currentStyle||document.defaultView&&document.defaultView.getComputedStyle(e,null)||e.style},p=h(e),d=h(l),v=i(d.paddingTop)+i(p.marginTop)+i(p.paddingTop),m=document.createElement("canvas"),g=m.getContext("2d"),y=document.createElement("canvas"),b=y.getContext("2d");if(isNaN(r)){var w=5,E=document.createElement("div"),S=E.style,x={font:p.font,width:"auto",display:"inline-block"};E.appendChild(document.createTextNode((new Array(1<<w)).join("a")+"a"));for(var T in x)S[T]=x[T];document.body.appendChild(E);r=E.offsetWidth>>w;n=i(p.lineHeight);isNaN(n)&&(n=E.offsetHeight);document.body.removeChild(E)}m.setAttribute("width",a*r);m.setAttribute("height",(1+s)*n);g.font=p.fontSize+" "+p.fontFamily;g.fillStyle=d.color;g.textBaseline="bottom";while(f--){var N=s-f;g.fillText(o+N-1+"",0,N*n)}y.setAttribute("width",1);y.setAttribute("height",n);b.fillStyle=d.borderColor;b.fillRect(0,n-1,1,1);p.wordWrap!="normal"&&console&&console.warn&&console.warn("rainbow.linenumbers: For correct linenumbers wordwrapping should be set to normal.");if(c){var C=d.backgroundColor;t&&(C="url("+y.toDataURL()+") 0 "+v+"px,"+C);if(u){C="url("+m.toDataURL()+") "+r+"px "+v+"px no-repeat,"+C;l.style.paddingLeft=parseInt(d.paddingLeft)+r*(a+1)+"px"}l.style.background=C}});return{toString:function(){return"[Object Rainbow.linenumbers]"}}}(window.Rainbow));

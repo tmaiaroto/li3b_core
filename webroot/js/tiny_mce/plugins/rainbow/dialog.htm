@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>{#rainbow_dlg.title}</title>
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	<script type="text/javascript" src="js/dialog.js"></script>
+</head>
+<body>
+
+<form onsubmit="RainbowDialog.insert();return false;" action="#">
+	<p>Paste your code in the following box and set some additional options if you like. Be sure to remove any &lt;?php or other tags, otherwise TinyMCE will strip out or comment out the code you paste in.</p>
+	<p><textarea id="codeSource" name="codeSource" class="textarea" style="width: 625px; height: 175px;"></textarea></p>
+	<label>Language:</label> 
+	<select id="language" name="language">
+		<option value="">Generic patterns</option>
+		<option value="javascript">Javascript</option>
+		<option value="html">HTML</option>
+		<option value="css">CSS</option>
+		<option value="ruby">Ruby</option>
+		<option value="python">Python</option>
+		<option value="shell">Shell</option>
+		<option value="java">Java</option>
+		<option value="php">PHP</option>
+		<option value="c">C</option>
+		<option value="cofeescript">Coffeescript</option>
+		<option value="go">Go</option>
+		<option value="scheme">Scheme</option>
+		<option value="lua">Lua</option>
+		<option value="csharp">C#</option>
+		<option value="smalltalk">Smalltalk</option>
+	</select>
+	 <label>Starting Line Number:</label> <input id="line" name="line" type="text" class="text" />
+
+	<div class="mceActionPanel">
+		<input type="button" id="insert" name="insert" value="{#insert}" onclick="RainbowDialog.insert();" />
+		<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="RainbowDialog.insert();" />
+	</div>
+</form>
+
+</body>
+</html>

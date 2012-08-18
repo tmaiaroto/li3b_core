@@ -234,5 +234,20 @@ class Html extends \lithium\template\helper\Html {
 		return strtr(base64_encode(addslashes(gzcompress(serialize($url),9))), '+/=', '-_,');
 	}
 	
+	/**
+	 * Unescpaes code in <code> elements that have been escaped by JavaScript
+	 * to avoid TinyMCE cleanup.
+	 */
+	public function containsSyntax($content=null) {
+		if($content) {
+			$content = preg_replace_callback('/(\<pre\>\<code.*\>)(.*)(\<\/code\>\<\/pre>)/i', function($matches) { 
+				if(isset($matches[0])) { return $matches[1] . urldecode($matches[2]) . $matches[3]; } }, $content);
+			//$content = rawurldecode($content);
+			
+		}
+		
+		return $content;
+	}
+	
 }
 ?>
