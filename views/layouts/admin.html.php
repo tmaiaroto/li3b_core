@@ -59,6 +59,8 @@
 				theme_advanced_resizing : true,
 				theme_advanced_resize_horizontal : false,
 				
+				extended_valid_elements: 'code[*],pre[*]',
+				
 				// Example content CSS (should be your site CSS)
 				content_css: "/li3b_core/css/editor-content.css"
 			});
