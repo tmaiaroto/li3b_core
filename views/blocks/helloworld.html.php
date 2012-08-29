@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * You can call this block from any view template or layout with the following:
  * <?=$this->bootstrapBlock->render('helloworld', array('foo' => 'bar')); ?>

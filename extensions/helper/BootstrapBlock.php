@@ -112,7 +112,7 @@ class BootstrapBlock extends \lithium\template\Helper {
 					);
 
 					$View = new View(array('paths' => $paths));
-					//$string .= $View->render('all', $data, $elementOptions);
+					$string .= $View->render('all', $data, $elementOptions);
 				}
 			}
 
