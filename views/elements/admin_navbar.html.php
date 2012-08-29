@@ -32,7 +32,7 @@
 		<?php } ?>
 		
 		<div class="nav-collapse">
-			<?=$this->bootstrapMenu->static_menu('admin'); ?>
+			<?=$this->bootstrapMenu->render('admin'); ?>
 		</div><!--/.nav-collapse -->
 	</div>
 	</div>

@@ -8,7 +8,7 @@ class BootstrapMenu extends \lithium\core\StaticObject {
 	 *
 	 * @var array
 	*/
-	static $static_menus = array(
+	static $staticMenus = array(
 		'admin' => array(
 			'_m1_dashboard' => array(
 				'title' => 'Dashboard',
@@ -29,30 +29,30 @@ class BootstrapMenu extends \lithium\core\StaticObject {
 	 * @param array $options
 	 * @return array The static menu(s)
 	*/
-	public static function static_menu($name=null, $options=array()) {
+	public static function staticMenu($name=null, $options=array()) {
 		$defaults = array();
 		$options += $defaults;
 		$params = compact('name', 'options');
-		
+
 		$filter = function($self, $params) {
 			$options = $params['options'];
 			$name = $params['name'];
-			$static_menus = array();
-			
+			$staticMenus = array();
+
 			// get a specific menu or all menus to return
 			if(empty($name)) {
-				$static_menus = $self::$static_menus;
+				$staticMenus = $self::$staticMenus;
 			} else {
-				$static_menus = isset($self::$static_menus[$params['name']]) ? $self::$static_menus[$params['name']]:array();
+				$staticMenus = isset($self::$staticMenus[$params['name']]) ? $self::$staticMenus[$params['name']]:array();
 			}
-			
+
 			// sort parent menu items by key name
-			ksort($static_menus);
-			
+			ksort($staticMenus);
+
 			// return the static menus
-			return $static_menus;
+			return $staticMenus;
 		};
-		
+
 		return static::_filter(__FUNCTION__, $params, $filter);
 	}
 
