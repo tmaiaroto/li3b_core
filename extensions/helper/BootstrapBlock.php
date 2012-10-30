@@ -105,7 +105,7 @@ class BootstrapBlock extends \lithium\template\Helper {
 							$appConfig['path'] . '/views/layouts/{:layout}.{:type}.php'
 						),
 						'template' => array(
-							$appConfig['path'] . '/views/_libraries/{:library}/blocks/{:template}.{:type}.php',
+							$appConfig['path'] . '/views/_libraries/' . $elementOptions['library'] . '/blocks/{:template}.{:type}.php',
 							'{:library}/views/blocks/{:template}.{:type}.php',
 							$appConfig['path'] . '/views/blocks/{:template}.{:type}.php'
 						)
