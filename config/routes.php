@@ -122,5 +122,6 @@ Router::connect("/{:controller}/{:action}/page-{:page:[0-9]+}/{:args}");
  */
 Router::connect("/plugin/{:library}/{:controller}/{:action}/{:args}");
 
-Router::connect("/{:controller}/{:action}/{:args}");
+// This is causing problems with new changes to the Router and it's duplicate anyway. You'd see this in a base Lithium app.
+// Router::connect("/{:controller}/{:action}/{:args}");
 ?>
