@@ -7,14 +7,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<?php 
-		echo $this->html->style(array('/li3b_core/css/bootstrap.min.css', '/li3b_core/css/bootstrap-responsive.min.css', '/li3b_core/css/font-awesome', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css', '/li3b_core/css/jquery/tipsy.css', '/li3b_core/css/admin'), array('inline' => true));	
+	<?php
+		echo $this->html->style(array('/li3b_core/css/bootstrap.min.css', '/li3b_core/css/bootstrap-responsive.min.css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css', '/li3b_core/css/jquery/tipsy.css', '/li3b_core/css/admin'), array('inline' => true));
 	?>
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script>!window.jQuery && document.write('<script src="/li3b_core/js/jquery/jquery-1.7.2.min.js"><\/script>')</script>	
+	<script>!window.jQuery && document.write('<script src="/li3b_core/js/jquery/jquery-1.7.2.min.js"><\/script>')</script>
 	<?php
 		echo $this->html->script(array('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js', '/li3b_core/js/jquery/jquery.tipsy.js', '/li3b_core/js/tiny_mce/tiny_mce.js', '/li3b_core/js/bootstrap.min.js', '/li3b_core/js/tiny_mce/jquery.tinymce.js'), array('inline' => true));
 	?>
@@ -40,15 +40,15 @@
 	<script type="text/javascript">
 		$(function() {
 			// $('.dropdown-toggle').dropdown()
-			
+
 			tinyMCE.init({
 				// General options
 				mode : "specific_textareas",
 				editor_selector : "editor-html",
-				
+
 				theme : "advanced",
 				plugins : "rainbow,style,table,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,xhtmlxtras",
-				
+
 				// Theme options
 				theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect,rainbow",
 				theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,|,forecolor,backcolor",
@@ -58,9 +58,9 @@
 				theme_advanced_statusbar_location : "bottom",
 				theme_advanced_resizing : true,
 				theme_advanced_resize_horizontal : false,
-				
+
 				extended_valid_elements: 'code[*],pre[*]',
-				
+
 				// Example content CSS (should be your site CSS)
 				content_css: "/li3b_core/css/editor-content.css"
 			});
