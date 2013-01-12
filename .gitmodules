@@ -1,6 +1,3 @@
-[submodule "webroot/bootstrap-wysihtml5"]
-	path = webroot/bootstrap-wysihtml5
-	url = git://github.com/jhollingworth/bootstrap-wysihtml5.git
 [submodule "webroot/bootstrap"]
 	path = webroot/bootstrap
 	url = git://github.com/twitter/bootstrap.git
@@ -10,6 +7,6 @@
 [submodule "webroot/font-awesome"]
 	path = webroot/font-awesome
 	url = git://github.com/FortAwesome/Font-Awesome.git
-[submodule "webroot/wysihtml5"]
-	path = webroot/wysihtml5
-	url = git://github.com/xing/wysihtml5.git
+[submodule "webroot/ckeditor"]
+	path = webroot/ckeditor
+	url = git@github.com:ckeditor/ckeditor-releases.git
