@@ -1,4 +1,4 @@
-/* 
+/*
     Document   : admin
     Created on : Jul 20, 2012, 9:32:16 AM
     Author     : tom
@@ -24,5 +24,16 @@ textarea.editor-html {
 a.help-tooltip {
 	font-weight: normal;
 	color: inherit;
+	text-decoration: none;
+}
+.tip {
+	position: relative;
+	top: -0.5em;
+	font-size: 80%;
+	font-weight: normal;
+	text-decoration: none;
+	color: #222;
+}
+a.tip:hover {
 	text-decoration: none;
 }

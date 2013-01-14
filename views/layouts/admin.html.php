@@ -49,6 +49,9 @@
 	</div><!--/.container-->
 	<script type="text/javascript">
 		$(function() {
+			// Tooltips
+			$('.tip').tooltip({html: true});
+
 			// Configure CKEditor
 			CKEDITOR.plugins.addExternal( 'wordcount', '/li3b_core/js/ckeditor-plugins/wordcount_1.0/wordcount/');
 			CKEDITOR.plugins.addExternal( 'mediaembed', '/li3b_core/js/ckeditor-plugins/mediaembed/');
