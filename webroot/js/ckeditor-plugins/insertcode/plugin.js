@@ -21,11 +21,6 @@ CKEDITOR.plugins.add( 'insertcode',
 		},
 		init : function( editor )
 		{
-			/*
-            CKEDITOR.scriptLoader.load('/li3b_core/js/highlight.pack.js', function (success) {
-            });
-			*/
-
 			editor.addCommand( 'insertcode', new CKEDITOR.dialogCommand( 'insertcode' ) );
 			editor.ui.addButton && editor.ui.addButton( 'InsertCode',
 				{
@@ -45,14 +40,19 @@ CKEDITOR.plugins.add( 'insertcode',
 						command : 'insertcode',
 						group : 'code'
 					});
+				// TODO: Fix this. I think the <code> must be added as a CKEDITOR node in order to get the data.
+				// For now, just have to click the code button in the toolbar to edit.
+				/*
 				editor.contextMenu.addListener( function( element )
 				{
 					if ( element )
+						//console.dir(element)
 						element = element.getAscendant( 'pre', true );
 					if ( element && !element.isReadOnly() && element.hasClass( editor.config.insertcode_class ) )
 						return { insertcode : CKEDITOR.TRISTATE_OFF };
 					return null;
 				});
+				*/
 			}
 
 			CKEDITOR.dialog.add( 'insertcode', function( editor )
@@ -76,9 +76,9 @@ CKEDITOR.plugins.add( 'insertcode',
 									required : true,
 									setup : function( element )
 									{
-										/* // isn't working...also interferes with the setValue() below.
-										var element = CKEDITOR.document.getById( this._.inputId );
-										element.on( 'keydown', function( ev ) {
+										/* // isn't working...
+										var textareaElement = CKEDITOR.document.getById( this._.inputId );
+										textareaElement.on( 'keydown', function( ev ) {
 											e = ev.data.$;
 											var o = e.target;
 											var kC = e.keyCode ? e.keyCode : e.charCode ? e.charCode : e.which;
@@ -120,8 +120,8 @@ CKEDITOR.plugins.add( 'insertcode',
 									commit : function( element )
 									{
 										//element.setHtml( CKEDITOR.tools.htmlEncode( this.getValue() ) );
+										//element.setHtml( '<code contenteditable="false">' + CKEDITOR.tools.htmlEncode( this.getValue() ) + '</code>' );
 										element.setHtml( '<code contenteditable="false">' + CKEDITOR.tools.htmlEncode( this.getValue() ) + '</code>' );
-										//hljs.highlightBlock(element);
 									}
 								}
 							]

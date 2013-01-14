@@ -7,7 +7,7 @@ use lithium\template\View;
 use lithium\core\Libraries;
 
 class Html extends \lithium\template\helper\Html {
-	
+
 	/**
 	 * We want to use our own little helper so that everything is shorter to write and
 	 * so we can use fancier messages with JavaScript.
@@ -26,22 +26,22 @@ class Html extends \lithium\template\helper\Html {
 			)
 		);
 		$options += $defaults;
-		
+
 		$message = '';
-		
+
 		$flash = FlashMessage::read($options['key']);
 		if (!empty($flash)) {
 			$message = $flash['message'];
 			FlashMessage::clear($options['key']);
 		}
-		
+
 		$view = new View(array(
 			'paths' => array(
 				'template' => '{:library}/views/elements/{:template}.{:type}.php',
 				'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php'
 			)
 		));
-		
+
 		return $view->render('all', array('options' => $options['options'], 'message' => $message), array(
 			'library' => 'li3b_core',
 			'template' => 'flash_message',
@@ -49,10 +49,10 @@ class Html extends \lithium\template\helper\Html {
 			'layout' => 'blank'
 		));
 	}
-	
+
 	/**
 	 * A little helpful method that returns the current URL for the page.
-	 * 
+	 *
 	 * @param $include_domain Boolean Whether or not to include the domain or just the request uri (true by default)
 	 * @param $include_querystring Boolean Whether or not to also include the querystring (true by default)
 	 * @return String
@@ -66,11 +66,11 @@ class Html extends \lithium\template\helper\Html {
 		} else {
 			$pageURL .= $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 		}
-		
+
 		if($include_domain === false) {
 			$pageURL = $_SERVER['REQUEST_URI'];
 		}
-		
+
 		// always remove the querystring, we'll tack it back on at the end if we want to keep it
 		if($include_querystring === false) {
 			parse_str($_SERVER['QUERY_STRING'], $vars);
@@ -80,17 +80,17 @@ class Html extends \lithium\template\helper\Html {
 				$pageURL = substr($pageURL, 0, -(strlen($querystring) + 1));
 			}
 		}
-		
+
 		// note, this also ditches the querystring
 		if($include_paging === false) {
 			$base_url = explode('/', $pageURL);
 			$base_url = array_filter($base_url, function($val) { return (!stristr($val, 'page:') && !stristr($val, 'limit:')); });
 			$pageURL = implode('/', $base_url);
 		}
-		
+
 		return $pageURL;
 	}
-	
+
 	/**
 	 * Basic date function.
 	 * TODO: Make or find a better one
@@ -110,10 +110,10 @@ class Html extends \lithium\template\helper\Html {
 		}
 		return $date;
 	}
-	
+
 	/**
 	 * A pretty date function that displays time as, "X days ago" or "minutes ago" etc.
-	 * 
+	 *
 	 * @param mixed $value The date object from MongoDB (or a unix timestamp)
 	 * @return string The parsed date with "ago" language
 	*/
@@ -125,8 +125,7 @@ class Html extends \lithium\template\helper\Html {
 			$querydate = date('ymdHi', $value);
 		}
 		$date_string = '';
-		
-		
+
 		$minusdate = date('ymdHi') - $querydate;
 		if($minusdate > 88697640 && $minusdate < 100000000){
 			$minusdate = $minusdate - 88697640;
@@ -142,7 +141,7 @@ class Html extends \lithium\template\helper\Html {
 						elseif($minusdate > 1 && $minusdate < 59){
 							$date_string = $minusdate.' minutes ago';
 						}
-			break; 
+			break;
 			case ($minusdate > 99 && $minusdate < 2359):
 						$flr = floor($minusdate * .01);
 						if($flr == 1){
@@ -181,7 +180,7 @@ class Html extends \lithium\template\helper\Html {
 			}
 		return $date_string;
 	}
-	
+
 	/**
 	 * A generic form field input that passes a querystring to the URL for the current page.
 	 * Great for search boxes.
@@ -202,11 +201,10 @@ class Html extends \lithium\template\helper\Html {
 			'label' => false
 		);
 		$output = '';
-		
+
 		$form_id = sha1('asd#@jsklvSx893S@gMp8oi' . time());
-		
+
 		$output .= ($options['div']) ? '<div class="' . $options['divClass'] . '">':'';
-		
 			$output .= (!empty($options['label'])) ? '<label class="' . $options['labelClass'] . '">' . $options['label'] . '</label>':'';
 			$output .= '<form class="' . $options['formClass'] . '" id="' . $form_id . '" onSubmit="';
 			$output .= 'window.location = window.location.href + \'?\' + $(\'#' . $form_id . '\').serialize();';
@@ -215,39 +213,39 @@ class Html extends \lithium\template\helper\Html {
 				$output .= '<input type="text" name="' . $options['key'] . '" value="' . $value . '" class="' . $options['inputClass'] . '" />';
 				$output .= '<button type="submit" class="' . $options['buttonClass'] . '">' . $options['buttonLabel'] . '</button>';
 			$output .= '</form>';
-			
+
 		$output .= ($options['div']) ? '</div>':'';
-		
+
 		return $output;
 	}
-	
+
 	/**
 	 * Encodes a URL so it can be used as an argument.
 	 * The retruned string will not contain any slashes that could be mistaken for a route
-	 * and will also not include any extension like .php etc. which could also be mistaken 
+	 * and will also not include any extension like .php etc. which could also be mistaken
 	 * for an atual URL rather than an argument being passed to an action.
-	 * 
+	 *
 	 * @param string $url
 	 * @return string
 	*/
 	public function urlAsArg($url=null) {
 		return strtr(base64_encode(addslashes(gzcompress(serialize($url),9))), '+/=', '-_,');
 	}
-	
+
 	/**
 	 * Unescpaes code in <code> elements that have been escaped by JavaScript
 	 * to avoid TinyMCE cleanup.
 	 */
 	public function containsSyntax($content=null) {
 		if($content) {
-			$content = preg_replace_callback('/(\<pre\>\<code.*\>)(.*)(\<\/code\>\<\/pre>)/i', function($matches) { 
+			$content = preg_replace_callback('/(\<pre\>\<code.*\>)(.*)(\<\/code\>\<\/pre>)/i', function($matches) {
 				if(isset($matches[0])) { return $matches[1] . urldecode($matches[2]) . $matches[3]; } }, $content);
 			//$content = rawurldecode($content);
-			
+
 		}
-		
+
 		return $content;
 	}
-	
+
 }
 ?>

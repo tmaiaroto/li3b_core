@@ -54,19 +54,19 @@
 			CKEDITOR.plugins.addExternal( 'mediaembed', '/li3b_core/js/ckeditor-plugins/mediaembed/');
 			CKEDITOR.plugins.addExternal( 'insertcode', '/li3b_core/js/ckeditor-plugins/insertcode/');
 			CKEDITOR.plugins.addExternal( 'codemirror', '/li3b_core/js/ckeditor-plugins/codemirror/');
+			CKEDITOR.plugins.addExternal( 'filebrowser', '/li3b_core/js/ckeditor-plugins/filebrowser/');
 			CKEDITOR.replaceAll( function( textarea, config ) {
 				// Allows the textarea to supply stylesheets for use in ckeditor with a data-stylesheet attribute.
 				var stylesheets = $(textarea).data('stylesheet');
 				if(stylesheets === undefined) {
-					stylesheets = ['/li3b_core/css/bootstrap.min.css', '/li3b_core/css/highlight-styles/solarized_dark.css']
+					stylesheets = ['/li3b_core/css/bootstrap.min.css', '/li3b_core/css/highlight-themes/solarized_dark.css', '/li3b_score/css/code-styles.css']
 				}
 
 		        config.contentsCss = stylesheets;
 				config.stylesSet = [];
 				config.tabSpaces = 4;
-				config.extraPlugins = 'wordcount,mediaembed,insertcode,codemirror';
+				config.extraPlugins = 'wordcount,mediaembed,insertcode,codemirror,filebrowser';
 		    } );
-
 
 			//console.dir(CKEDITOR.instances)
 			for(i in CKEDITOR.instances) {

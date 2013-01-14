@@ -1,0 +1,54 @@
+/**
+ * These styles will ensure that the code scrolls and does not wrap to the next line. This makes it much easier to read.
+ * You will likely want to include this style sheet for any page that has code snippets on it.
+*/
+
+/**
+ * This gets rid of the Bootstrap styles which will frame the pre element with a gray background and border.
+ * It doesn't actually look that bad if you want to keep it, comment these out or play around with the styles.
+*/
+pre.prettyprint {
+    background: none;
+    padding: 0;
+    border: none;
+}
+
+pre {
+    word-wrap: normal;
+}
+
+/**
+ * You could remove this and let the code line-wrap if you really wanted...
+ * Or remove word-wrap: normal; from the pre style above, both are required to keep code lines from wrapping.
+*/
+code {
+    overflow: auto;
+	white-space: pre !important;
+}
+
+/**
+ * Style the scroll bars in webkit based browsers to something neutral and nice.
+ * Note: On OS X this will also make the scroll bars visible whereas normally they get hidden.
+ * This makes it more obvious to the user that there is actually something to scroll.
+*/
+pre ::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+pre ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+pre ::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(155,155,155,0.8);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+pre ::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(155,155,155,0.4);
+}
