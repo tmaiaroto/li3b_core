@@ -1,0 +1,67 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Whitelist plugin</title>
+<link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h1>Whitelist Plugin for CKEditor</h1>
+
+<h2>Introduction</h2>
+<p>This is a plugin that restricts the allowed elements and attributes in <a href="http://www.ckeditor.com">CKEditor</a>.</p>
+
+<h3 id="contact">Author:</h3>
+<p><a href="mailto:amla70@gmail.com">Alfonso Mart&iacute;nez de Lizarrondo</a></p>
+
+<h3>Version history: </h3>
+<ol>
+  <li>1.0: 20-May-2012. First version.</li>
+</ol>
+
+<h2>Installation</h2>
+<h3>1. Copying the files</h3>
+<p>Extract the contents of the zip in you plugins directory, so it ends up like
+    this<br>
+    <!--<img src="installation.png" alt="Screenshot of installation" width="311" height="346" longdesc="#install">-->
+    </p>
+<pre id="--install">
+ckeditor\
+	...
+	images\
+	lang\
+	plugins\
+		...
+		whitelist
+			plugin.js
+			docs\
+				install.html
+		...
+	skins\
+	themes\
+</pre>
+<h3>2. Adding it to CKEditor</h3>
+<p>Now add the plugin in your <em>config.js</em> or custom js configuration
+file:
+<code>config.extraPlugins='whitelist'; </code>
+</p>
+
+<h3>3. Configuration</h3>
+<p>You can modify the list of allowed elements or attributes with the whitelist_elements and whitelist_globalAttributes entries.</p>
+
+<h3>4. Notes</h3>
+<p>This is not a full security solution. It must be coupled with a proper filter at the server like <a href="http://htmlpurifier.org/">HTML Purifier</a> for PHP.
+Previously it was possible to use the Microsoft AntiXSS for .Net, but the latest version seems horrible broken, anyone knows of a good alternative?.<br>
+If anyone suggests other such filters I can add them here so people can find them.</p>
+<p>The aim of this plugin is to try to avoid showing to the user elements that will be filtered out later by the server script, not to provide a full security over the code (an attacker won't use CKEditor, he will POST the HTML directly to your page bypassing javascript "security").</p>
+
+<!--
+<h2>Final notes</h2>
+-->
+
+<h2>Disclaimers</h2>
+<p>CKEditor is  &copy; CKSource.com</p>
+</body>
+</html>

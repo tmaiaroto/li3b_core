@@ -10,3 +10,6 @@
 [submodule "webroot/ckeditor"]
 	path = webroot/ckeditor
 	url = git@github.com:ckeditor/ckeditor-releases.git
+[submodule "webroot/highlight"]
+	path = webroot/highlight
+	url = git@github.com:isagalaev/highlight.js.git

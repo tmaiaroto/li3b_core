@@ -8,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<?php
-		echo $this->html->style(array('/li3b_core/css/bootstrap.min.css', '/li3b_core/css/bootstrap-responsive.min.css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css', '/li3b_core/css/jquery/tipsy.css', '/li3b_core/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css', '/li3b_core/css/admin'), array('inline' => true));
+		echo $this->html->style(array('/li3b_core/css/bootstrap.min.css', '/li3b_core/css/bootstrap-responsive.min.css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css', '/li3b_core/css/jquery/tipsy.css', '/li3b_core/css/admin'), array('inline' => true));
 	?>
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -21,9 +21,9 @@
 			'/li3b_core/js/jquery/jquery.tipsy.js',
 			'/li3b_core/js/tiny_mce/tiny_mce.js',
 			'/li3b_core/js/bootstrap.min.js',
-			'/li3b_core/wysihtml5/dist/wysihtml5-0.3.0.js',
-			'/li3b_core/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js',
-			'/li3b_core/js/tiny_mce/jquery.tinymce.js'
+			//'/li3b_core/js/tiny_mce/jquery.tinymce.js',
+			'/li3b_core/ckeditor/ckeditor.js',
+			'/li3b_core/js/highlight.pack.js'
 		), array('inline' => true));
 	?>
 	<?php
@@ -40,7 +40,6 @@
 	</style>
 	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
 
-	<script type="text/javascript" src="/li3b_core/js/full-rainbow.min.js"></script>
 </head>
 <body>
 	<?=$this->_render('element', 'admin_navbar', array('user' => $this->request()->user), array('library' => 'li3b_core')); ?>
@@ -50,74 +49,65 @@
 	</div><!--/.container-->
 	<script type="text/javascript">
 		$(function() {
-
-			// TO INSERT ANY SPECIFIC PREDEFINED TEXT: data-wysihtml5-command="insertHTML" data-wysihtml5-command-value="your text here"
-
-			$('.wysihtml5').wysihtml5('deepExtend', {
-				stylesheets: ['/li3b_core/css/bootstrap.min.css', '/li3b_core/css/rainbow-themes/blackboard.css'],
-				toolbar: {
-					speech: '<li>' +
-							'<a class="btn" data-wysihtml5-command="insertSpeech" title="Voice input" href="javascript:;" unselectable="on"><i class="icon-volume-up"></i></a>' +
-						'</li>',
-					code:  function(locale, options) {
-						return '<li><a class="btn" data-wysihtml5-command="formatInline" data-wysihtml5-command-value="code" href="javascript:;" unselectable="on"><i class="icon-th-large"></i></li>'
-					},
-					insertThis: function(locale, options) {
-						return '<li><a class="btn" data-wysihtml5-command="fomratInline" data-wysihtml5-command-value="span" href="javascript:;"><i class="icon-ok"></i></a></li>';
-					},
-					insertAnything:  function(locale, options) {
-							return '<li>' +
-								'<a class="btn" data-wysihtml5-command="insertHTML" href="javascript:;" data-toggle="modal" data-target="#insertAnythingModal" unselectable="on"><i class="icon-asterisk"></i></a>' +
-								'<div id="insertAnythingModal" data-wysihtml5-dialog="insertHTML" class="modal hide fade">' +
-									'<div class="modal-header">' +
-										'<a class="close" data-dismiss="modal">&times;</a>' +
-										'<h3>Insert Some Stuff</h3>' +
-									'</div>' +
-									'<div class="modal-body">' +
-										'<textarea id="myJazz"></textarea>' +
-									'</div>' +
-									'<div class="modal-footer">' +
-										'<a class="btn" href="javascript:;" data-dismiss="modal">Cancel</a>' +
-										'<a class="btn btn-primary" data-dismiss="modal" data-wysihtml5-command="insertHTML" onClick="$(this).attr(\'data-wysihtml5-command-value\', $(\'#myJazz\').val()); $(\'#myJazz\').val(\'\')" data-wysihtml5-command-value="jazz" href="javascript:;" unselectable="on">Insert</a>' +
-									'</div>' +
-								'</div>' +
-							'</li>';
-					},
-				},
-				html: true,
-				parserRules: {
-					classes: {
-					  "middle": 1,
-					  "icon-beer": 1,
-					  "prettyprint": 1
-					},
-					tags: {
-						// <iframe width="560" height="315" src="http://www.youtube.com/embed/eE_IUPInEuc" frameborder="0" allowfullscreen></iframe>
-						iframe: {
-							allow_attributes: ['height', 'width', 'src', 'frameborder', 'allowfullscreen']
-						},
-						code: {
-							allow_attributes: ['data-language', 'style']
-						},
-						pre: {
-							allow_attributes: ['style']
-						},
-						strong: {},
-						em: {},
-						i: {}
-					}
+			// Configure CKEditor
+			CKEDITOR.plugins.addExternal( 'wordcount', '/li3b_core/js/ckeditor-plugins/wordcount_1.0/wordcount/');
+			CKEDITOR.plugins.addExternal( 'mediaembed', '/li3b_core/js/ckeditor-plugins/mediaembed/');
+			CKEDITOR.plugins.addExternal( 'insertcode', '/li3b_core/js/ckeditor-plugins/insertcode/');
+			CKEDITOR.plugins.addExternal( 'codemirror', '/li3b_core/js/ckeditor-plugins/codemirror/');
+			CKEDITOR.replaceAll( function( textarea, config ) {
+				// Allows the textarea to supply stylesheets for use in ckeditor with a data-stylesheet attribute.
+				var stylesheets = $(textarea).data('stylesheet');
+				if(stylesheets === undefined) {
+					stylesheets = ['/li3b_core/css/bootstrap.min.css', '/li3b_core/css/highlight-styles/solarized_dark.css']
 				}
-			});
 
-			var wysihtml5Editor = $('.wysihtml5').data("wysihtml5").editor;
-			//console.dir(wysihtml5Editor)
-			wysihtml5Editor.on('blur', function(a) {
-				$('#PostBody').val(wysihtml5Editor.getValue());
-			})
+		        config.contentsCss = stylesheets;
+				config.stylesSet = [];
+				config.tabSpaces = 4;
+				config.extraPlugins = 'wordcount,mediaembed,insertcode,codemirror';
+		    } );
 
+
+			//console.dir(CKEDITOR.instances)
+			for(i in CKEDITOR.instances) {
+				CKEDITOR.instances[i].on('key', function(ev) {
+					var editor = ev.editor;
+	                var dataProcessor = editor.dataProcessor;
+	                var htmlFilter = dataProcessor && dataProcessor.htmlFilter;
+	                htmlFilter.addRules(
+	                {
+	                    elements:
+	                    {
+	                        font: function(element)
+	                        {
+	                            return false;
+	                        }
+	                    }
+	                });
+				});
+
+				CKEDITOR.instances[i].on('instanceReady', function(ev) {
+	                var editor = ev.editor;
+	                var dataProcessor = editor.dataProcessor;
+	                var htmlFilter = dataProcessor && dataProcessor.htmlFilter;
+	                htmlFilter.addRules(
+	                {
+	                    elements:
+	                    {
+	                        font: function(element)
+	                        {
+	                            return false;
+	                        }
+	                    }
+	                });
+	            });
+
+
+			}
 
 			// $('.dropdown-toggle').dropdown()
 
+			/*
 			tinyMCE.init({
 				// General options
 				mode : "specific_textareas",
@@ -141,6 +131,7 @@
 				// Example content CSS (should be your site CSS)
 				content_css: "/li3b_core/css/editor-content.css"
 			});
+			*/
 		});
 	</script>
 	<?=$this->html->flash(); ?>
