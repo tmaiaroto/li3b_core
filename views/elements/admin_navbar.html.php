@@ -1,3 +1,9 @@
+<?php
+use lithium\core\Libraries;
+$config = Libraries::get('li3b_core');
+$navbarTitle = isset($config['navbarTitle']) ? $config['navbarTitle']:'Lithium Bootstrap';
+$navbarTitle = isset($config['adminNavbarTitle']) ? $config['adminNavbarTitle']:$navbarTitle;
+?>
 <div class="navbar navbar-fixed-top navbar-inverse">
 	<div class="navbar-inner">
 	<div class="container">
@@ -6,9 +12,9 @@
 		<span class="icon-bar"></span>
 		<span class="icon-bar"></span>
 		</a>
-		
-		<?=$this->html->link('Lithium Bootstrap', '/admin', array('class' => 'brand')); ?>
-		
+
+		<?=$this->html->link($navbarTitle, '/admin', array('class' => 'brand', 'escape' => false)); ?>
+
 		<?php if($user = $this->request()->user) { ?>
 			<div class="btn-group pull-right">
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -30,7 +36,7 @@
 			</ul>
 			</div>
 		<?php } ?>
-		
+
 		<div class="nav-collapse">
 			<?=$this->bootstrapMenu->render('admin'); ?>
 		</div><!--/.nav-collapse -->
