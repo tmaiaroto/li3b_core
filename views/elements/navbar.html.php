@@ -1,3 +1,8 @@
+<?php
+use lithium\core\Libraries;
+$config = Libraries::get('li3b_core');
+$navbarTitle = isset($config['navbarTitle']) ? $config['navbarTitle']:'Lithium Bootstrap';
+?>
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 	<div class="container">
@@ -6,9 +11,9 @@
 		<span class="icon-bar"></span>
 		<span class="icon-bar"></span>
 		</a>
-		
-		<?=$this->html->link('Lithium Bootstrap', '/', array('class' => 'brand')); ?>
-		
+
+		<?=$this->html->link($navbarTitle, '/', array('class' => 'brand', 'escape' => false)); ?>
+
 		<?php if($user = $this->request()->user) { ?>
 			<div class="btn-group pull-right">
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -30,7 +35,7 @@
 			</ul>
 			</div>
 		<?php } ?>
-		
+
 		<div class="nav-collapse">
 			<?=$this->bootstrapMenu->render('public', array('menuClass' => 'nav', 'activeClass' => 'active')); ?>
 		</div><!--/.nav-collapse -->
