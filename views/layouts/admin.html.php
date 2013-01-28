@@ -58,7 +58,7 @@
 			CKEDITOR.plugins.addExternal( 'insertcode', '/li3b_core/js/ckeditor-plugins/insertcode/');
 			CKEDITOR.plugins.addExternal( 'codemirror', '/li3b_core/js/ckeditor-plugins/codemirror/');
 			CKEDITOR.plugins.addExternal( 'filebrowser', '/li3b_core/js/ckeditor-plugins/filebrowser/');
-			CKEDITOR.replaceAll( function( textarea, config ) {
+			CKEDITOR.replaceAll( function( $('textarea .ckeditor'), config ) {
 				// Allows the textarea to supply stylesheets for use in ckeditor with a data-stylesheet attribute.
 				var stylesheets = $(textarea).data('stylesheet');
 				if(stylesheets === undefined) {
