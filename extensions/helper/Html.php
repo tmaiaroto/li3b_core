@@ -191,14 +191,16 @@ class Html extends \lithium\template\helper\Html {
 	public function queryForm($options=array()) {
 		$options += array(
 			'key' => 'q',
-			'formClass' => '',
-			'inputClass' => 'input-span3',
+			'formClass' => 'form-search',
+			'inputClass' => 'input-span3 search-query',
 			'buttonClass' => 'btn',
 			'labelClass' => '',
 			'buttonLabel' => 'Submit',
 			'div' => true,
 			'divClass' => '',
-			'label' => false
+			'label' => false,
+			'bootstrapPrepend' => false,
+			'bootstrapAppend' => false
 		);
 		$output = '';
 
@@ -209,9 +211,22 @@ class Html extends \lithium\template\helper\Html {
 			$output .= '<form class="' . $options['formClass'] . '" id="' . $form_id . '" onSubmit="';
 			$output .= 'window.location = window.location.href + \'?\' + $(\'#' . $form_id . '\').serialize();';
 			$output .= '">';
+				$output .= ($options['bootstrapAppend']) ? '<div class="input-append">':'';
+				$output .= ($options['bootstrapPrepend']) ? '<div class="input-prepend">':'';
+
 				$value = (isset($_GET[$options['key']])) ? $_GET[$options['key']]:'';
+				if($options['bootstrapPrepend'] === true) {
+					$output .= '<button type="submit" class="' . $options['buttonClass'] . '">' . $options['buttonLabel'] . '</button>';
+				}
+
 				$output .= '<input type="text" name="' . $options['key'] . '" value="' . $value . '" class="' . $options['inputClass'] . '" />';
-				$output .= '<button type="submit" class="' . $options['buttonClass'] . '">' . $options['buttonLabel'] . '</button>';
+
+				if($options['bootstrapPrepend'] === false) {
+					$output .= '<button type="submit" class="' . $options['buttonClass'] . '">' . $options['buttonLabel'] . '</button>';
+				}
+
+				$output .= ($options['bootstrapAppend']) ? '</div>':'';
+				$output .= ($options['bootstrapPrepend']) ? '</div>':'';
 			$output .= '</form>';
 
 		$output .= ($options['div']) ? '</div>':'';
