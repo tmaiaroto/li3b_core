@@ -144,6 +144,37 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 
 	}
 
+	/**
+	 * Allow the main application to use Lithium Bootstrap's admin layout template and elements.
+	 * This helps to speed up development without the need to always create libraries for everything.
+	 */
+	if(isset($params['params']['admin']) && $params['params']['admin'] === true && !isset($params['params']['library'])) {
+		$defaultAppConfig = Libraries::get(true);
+		$appPath = $defaultAppConfig['path'];
+
+		$paths['layout'] = array(
+			$appPath . '/views/layouts/{:layout}.{:type}.php',
+			// Last, look in the li3b_core library...
+			$appPath . '/libraries/li3b_core/views/layouts/{:layout}.{:type}.php'
+		);
+
+		$paths['template'] = array(
+			$appPath . '/views/{:controller}/{:template}.{:type}.php',
+			// li3b_core has no controller other than pages. This basically ensures "/admin" still works.
+			$appPath . '/libraries/li3b_core/views/{:controller}/{:template}.{:type}.php'
+		);
+
+		// Allow admin elements to be overridden for the main app looking to use the admin templates.
+		// There is the top nav element as well as the footer...But if they aren't being overwritten,
+		// simply use the templates that exist in li3b_core.
+		$paths['element'] = array(
+			$appPath . '/views/elements/{:template}.{:type}.php',
+			$appPath . '/libraries/li3b_core/views/elements/{:template}.{:type}.php'
+		);
+
+		$params['options']['render']['paths'] = $paths;
+	}
+
 	return $chain->next($self, $params, $chain);
 });
 ?>

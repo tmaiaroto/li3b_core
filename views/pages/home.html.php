@@ -1,5 +1,14 @@
 <div id="center-box-bg">
 	<div id="center-box-content">
+		<div class="page-header">
+			<h1>Lithium Bootstrap</h1>
+		</div>
+		<p>
+			Lithium Bootstrap is a compilation of several libraries designed to serve as boilerplate code for your Lithium PHP Framework based application.
+			It alters Lithium in no way, so it is compatible with any of your existing Lithium applications. However, you will want to familiarize yourself
+			with the routes. Lithium Bootstrap prefers the use of MongoDB (and many libraries written for Lithium Bootstrap will require it), however the
+			<code>li3b_core</code> library does not require it.
+		</p>
 		<?php
 		/**
 		* Lithium: the most rad php framework
@@ -17,7 +26,13 @@
 		$self = $this;
 
 		$notify = function($status, $message, $solution = null) {
-			$html  = "<div class=\"test-result test-result-{$status}\">{$message}</div>";
+			$html  = "<div class=\"test-result test-result-{$status}\"><h4>{$message}</h4></div>";
+			$html .= "<div class=\"test-result solution\">{$solution}</div>";
+			return $html;
+		};
+
+		$alert = function($status, $message, $solution = null) {
+			$html  = "<div class=\"alert alert-{$status}\">{$message}</div>";
 			$html .= "<div class=\"test-result solution\">{$solution}</div>";
 			return $html;
 		};
@@ -45,9 +60,9 @@
 		};
 
 		$checks = array(
-			'resourcesWritable' => function() use ($notify) {
+			'resourcesWritable' => function() use ($notify, $alert) {
 				if (is_writable($path = Libraries::get(true, 'resources'))) {
-					return $notify('success', 'Resources directory is writable');
+					return $alert('success', 'Resources directory is writable');
 				}
 				$path = str_replace(dirname(LITHIUM_APP_PATH) . '/', null, $path);
 				$solution = null;
@@ -60,45 +75,45 @@
 					$solution  = 'To fix this, give <code>modify</code> rights to the user ';
 					$solution .= "<code>Everyone</code> on directory <code>{$path}</code>.";
 				}
-				return $notify(
-					'fail',
+				return $alert(
+					'error',
 					'Your resource path is not writeable',
 					$solution
 				);
 			},
-			'magicQuotes' => function() use ($notify) {
+			'magicQuotes' => function() use ($notify, $alert) {
 				if (!get_magic_quotes_gpc()) {
 					return;
 				}
-				return $notify(
-					'fail',
+				return $alert(
+					'error',
 					'Magic quotes are enabled in your PHP configuration',
 					'Please set <code>magic_quotes_gpc = Off</code> in your <code>php.ini</code> settings.'
 				);
 			},
-			'registerGlobals' => function() use ($notify) {
+			'registerGlobals' => function() use ($notify, $alert) {
 				if (!ini_get('register_globals')) {
 					return;
 				}
-				return $notify(
-					'fail',
+				return $alert(
+					'error',
 					'Register globals is enabled in your PHP configuration',
 					'Please set <code>register_globals = Off</code> in your <code>php.ini</code> settings.'
 				);
 			},
-			'curlwrappers' => function() use ($notify, $compiled) {
+			'curlwrappers' => function() use ($notify, $compiled, $alert) {
 				if (!$compiled('with-curlwrappers')) {
 					return;
 				}
-				return $notify(
-					'fail',
+				return $alert(
+					'error',
 					'Curlwrappers are enabled, some things might not work as expected.',
 					"This is an expiremental and usually broken feature of PHP.
 					Please recompile your PHP binary without using the <code>--with-curlwrappers</code>
 					flag or use a precompiled binary that was compiled without the flag."
 				);
 			},
-			'shortOpenTag' => function() use ($notify, $compiled) {
+			'shortOpenTag' => function() use ($notify, $compiled, $alert) {
 				if (!ini_get('short_open_tag')) {
 					return;
 				}
@@ -110,7 +125,7 @@
 					<code>short_open_tag = Off</code> in your <code>php.ini</code>."
 				);
 			},
-			'dbSupport' => function() use ($notify, $support) {
+			'dbSupport' => function() use ($notify, $support, $alert) {
 				$paths = array('data.source', 'adapter.data.source.database', 'adapter.data.source.http');
 				$list = array();
 
@@ -129,9 +144,9 @@
 
 				return $notify('notice', 'Cache support', $support($map));
 			},
-			'database' => function() use ($notify) {
+			'database' => function() use ($notify, $alert) {
 				if ($config = Connections::config()) {
-					return $notify('success', 'Database connection(s) configured');
+					return $alert('success', 'Database connection(s) configured');
 				}
 				return $notify(
 					'notice',
@@ -147,7 +162,7 @@
 					</ol>"
 				);
 			},
-			'change' => function() use ($notify, $self) {
+			'change' => function() use ($notify, $self, $alert) {
 				$template = $self->html->link('template', 'http://lithify.me/docs/lithium/template');
 
 				return $notify(
@@ -160,7 +175,7 @@
 					edit the file <code>views/layouts/default.html.php</code>."
 				);
 			},
-			'routing' => function() use ($notify, $self) {
+			'routing' => function() use ($notify, $self, $alert) {
 				$routing = $self->html->link('routing', 'http://lithify.me/docs/lithium/net/http/Router');
 
 				return $notify(
@@ -170,7 +185,7 @@
 					{$routing}, edit the file <code>config/routes.php</code>."
 				);
 			},
-			'tests' => function() use ($notify, $self) {
+			'tests' => function() use ($notify, $self, $alert) {
 				if (Environment::is('production')) {
 					$docsLink = $self->html->link(
 						'the documentation',
