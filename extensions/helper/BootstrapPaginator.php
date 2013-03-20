@@ -27,7 +27,7 @@ class BootstrapPaginator extends \lithium\template\Helper {
 	 * @see li3_paginate\extensions\helper\Paginator::_init()
 	 */
 	protected $_library = null;
-	
+
 	/**
 	 * Controller string used by this helper to create next/prev & page links.
 	 *
@@ -82,6 +82,17 @@ class BootstrapPaginator extends \lithium\template\Helper {
 	 * @see li3_paginate\extensions\helper\Paginator::_init()
 	 */
 	protected $_limit = null;
+
+	/**
+	 * Sort value used by this helper to create next/prev & page links.
+	 *
+	 * Represents the number of records/documents to show per page,
+	 * it is fetched during _init() via $this->_context.
+	 *
+	 * @var string
+	 * @see li3_paginate\extensions\helper\Paginator::_init()
+	 */
+	protected $_sort = null;
 
 	/**
 	 * Protected array of string templates used by this helper.
@@ -140,7 +151,7 @@ class BootstrapPaginator extends \lithium\template\Helper {
 			'action' => "",
 			'pagingWrapper' => '<div class="pagination pagination-condensed"><ul>{:content}</ul></div>'
 		);
-		
+
 		parent::__construct($config + $defaults);
 	}
 
@@ -162,6 +173,7 @@ class BootstrapPaginator extends \lithium\template\Helper {
 		$this->_page = ($this->_context->_config['data']['page'] + 0) ?: 1;
 		$this->_total = $this->_context->_config['data']['total'];
 		$this->_limit = $this->_context->_config['data']['limit'];
+		$this->_sort =  isset($this->_context->_config['request']->params['sort']) ? $this->_context->_config['request']->params['sort']:null;
 	}
 
 	/**
@@ -183,7 +195,7 @@ class BootstrapPaginator extends \lithium\template\Helper {
 				$this->_context->_config['request'],
 				array('absolute' => true)
 			);
-			
+
 			if(!empty($this->_library) && is_array($url)) {
 				$url['library'] = $this->_library;
 			}
@@ -211,7 +223,7 @@ class BootstrapPaginator extends \lithium\template\Helper {
 				$this->_context->_config['request'],
 				array('absolute' => true)
 			);
-			
+
 			if(!empty($this->_library) && is_array($url)) {
 				$url['library'] = $this->_library;
 			}
@@ -239,7 +251,7 @@ class BootstrapPaginator extends \lithium\template\Helper {
 				$this->_context->_config['request'],
 				array('absolute' => true)
 			);
-			
+
 			if(!empty($this->_library) && is_array($url)) {
 				$url['library'] = $this->_library;
 			}
@@ -268,7 +280,7 @@ class BootstrapPaginator extends \lithium\template\Helper {
 				$this->_context->_config['request'],
 				array('absolute' => true)
 			);
-			
+
 			if(!empty($this->_library) && is_array($url)) {
 				$url['library'] = $this->_library;
 			}
@@ -297,16 +309,16 @@ class BootstrapPaginator extends \lithium\template\Helper {
 			$end = ($this->_page + 4);
 		}
 		$buffer = "";
-		
+
 		$url = array(
 			'controller' => $this->_controller,
 			'action' => $this->_action
 		);
-		
+
 		if(!empty($this->_library)) {
 			$url['library'] = $this->_library;
 		}
-		
+
 		for ($i = $start; $i <= $end; $i++) {
 			$config = array('page' => $i) + $this->_query();
 			$url = \lithium\net\http\Router::match(
@@ -338,7 +350,7 @@ class BootstrapPaginator extends \lithium\template\Helper {
 		if (!empty($options)) {
 			$this->config($options);
 		}
-		
+
 		$this->_library = (empty($this->_config['library']) && isset($this->_context->_config['request']->params['library'])) ? $this->_context->_config['request']->params['library'] : $this->_config['library'];
 		$this->_controller = (empty($this->_config['controller'])) ? $this->_context->_config['request']->params['controller'] : $this->_config['controller'];
 		$this->_action = (empty($this->_config['action'])) ? $this->_context->_config['request']->params['action'] : $this->_config['action'];

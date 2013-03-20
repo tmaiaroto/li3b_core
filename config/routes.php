@@ -85,6 +85,9 @@ Router::connect('/admin/plugin/{:library}/{:controller}/{:action}/page-{:page:[0
 Router::connect('/admin/plugin/{:library}/{:controller}/{:action}/page-{:page:[0-9]+}/sort-{:sort}', array('admin' => true), array('persist' => array(
 	'controller', 'admin', 'library'
 )));
+Router::connect('/admin/plugin/{:library}/{:controller}/{:action}/page-{:page:[0-9]+}/{:args}', array('admin' => true), array('persist' => array(
+	'controller', 'admin', 'library'
+)));
 Router::connect('/admin/plugin/{:library}/{:controller}/{:action}/page-{:page:[0-9]+}', array('admin' => true), array('persist' => array(
 	'controller', 'admin', 'library'
 )));
@@ -120,6 +123,9 @@ Router::connect('/admin/{:controller}/{:action}/page-{:page:[0-9]+}/limit-{:limi
 Router::connect('/admin/{:controller}/{:action}/page-{:page:[0-9]+}/sort-{:sort}', array('admin' => true), array('persist' => array(
 	'controller', 'admin'
 )));
+Router::connect('/admin/{:controller}/{:action}/page-{:page:[0-9]+}/{:args}', array('admin' => true), array('persist' => array(
+	'controller', 'admin'
+)));
 Router::connect('/admin/{:controller}/{:action}/page-{:page:[0-9]+}', array('admin' => true), array('persist' => array(
 	'controller', 'admin'
 )));
@@ -145,6 +151,9 @@ Router::connect('/plugin/{:library}/{:controller}/{:action}/page-{:page:[0-9]+}/
 )));
 Router::connect('/plugin/{:library}/{:controller}/{:action}/page-{:page:[0-9]+}/sort-{:sort}', array('action' => 'index'), array('persist' => array(
 	'controller', 'library'
+)));
+Router::connect('/plugin/{:library}/{:controller}/{:action}/page-{:page:[0-9]+}/{:args}', array('action' => 'index'), array('persist' => array(
+	'controller', 'admin', 'library'
 )));
 Router::connect('/plugin/{:library}/{:controller}/{:action}/page-{:page:[0-9]+}', array('action' => 'index'), array('persist' => array(
 	'controller', 'admin', 'library'
