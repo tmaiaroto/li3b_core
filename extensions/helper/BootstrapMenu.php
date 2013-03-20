@@ -97,7 +97,7 @@ class BootstrapMenu extends \lithium\template\Helper {
 							if($activeIf['library'] == $this->_context->request()->params['library']) {
 							$activeClass = $activeClassName;
 							}
-						} elseif(isset($activeIf['controller']) && $activeIf['controller'] == $this->_context->request()->params['controller']) {
+						} elseif(isset($this->_context->request()->params['controller']) && (isset($activeIf['controller']) && $activeIf['controller'] == $this->_context->request()->params['controller'])) {
 							$activeClass = $activeClassName;
 						}
 					}
