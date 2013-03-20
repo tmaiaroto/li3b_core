@@ -182,6 +182,27 @@ class Html extends \lithium\template\helper\Html {
 	}
 
 	/**
+	 * Renders a compact search form using queryForm()
+	 * This could be replicated without this method, but this makes it easier.
+	 *
+	 * @return [type] [description]
+	 */
+	public function compactSearch($options=array()) {
+		$options += array(
+			'formClass' => 'form-search',
+			'placeholder' => 'search...'
+		);
+		$output = '<style type="text/css">.compact-search button.add-on { height: inherit !important; }</style>';
+		$options['divClass'] = 'input-append compact-search';
+		$options['buttonClass'] = 'btn add-on';
+		$options['inputClass'] = '';
+		$options['buttonLabel'] = '<i class="icon-search"></i>';
+
+		$output .= $this->queryForm($options);
+		return $output;
+	}
+
+	/**
 	 * A generic form field input that passes a querystring to the URL for the current page.
 	 * Great for search boxes.
 	 *
@@ -192,7 +213,7 @@ class Html extends \lithium\template\helper\Html {
 		$options += array(
 			'key' => 'q',
 			'formClass' => 'form-search',
-			'inputClass' => 'input-span3 search-query',
+			'inputClass' => 'input-medium search-query',
 			'buttonClass' => 'btn',
 			'labelClass' => '',
 			'buttonLabel' => 'Submit',
@@ -200,7 +221,8 @@ class Html extends \lithium\template\helper\Html {
 			'divClass' => '',
 			'label' => false,
 			'bootstrapPrepend' => false,
-			'bootstrapAppend' => false
+			'bootstrapAppend' => false,
+			'placeholder' => ''
 		);
 		$output = '';
 
@@ -219,7 +241,7 @@ class Html extends \lithium\template\helper\Html {
 					$output .= '<button type="submit" class="' . $options['buttonClass'] . '">' . $options['buttonLabel'] . '</button>';
 				}
 
-				$output .= '<input type="text" name="' . $options['key'] . '" value="' . $value . '" class="' . $options['inputClass'] . '" />';
+				$output .= '<input type="text" placeholder="' . $options['placeholder'] . '" name="' . $options['key'] . '" value="' . $value . '" class="' . $options['inputClass'] . '" />';
 
 				if($options['bootstrapPrepend'] === false) {
 					$output .= '<button type="submit" class="' . $options['buttonClass'] . '">' . $options['buttonLabel'] . '</button>';
