@@ -25,8 +25,6 @@ $code = $exception->getCode();
 		</p>
 		<p class="lighter_copy">
 			You can return to the home page by <?=$this->html->link('clicking here.', '/'); ?><br />
-			If you are not logged in, you may also want to <?=$this->html->link('login.', array('controller' => 'users', 'action' => 'login')); ?> 
-			If you are logged in, why don't you go back to the <?=$this->html->link('dashboard', '/admin'); ?> and see if you can find what you're looking for there.
 		</p>
 	</div>
 </div>
