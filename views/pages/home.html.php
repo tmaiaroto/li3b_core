@@ -1,3 +1,13 @@
+<style type="text/css">
+ul.indicated {
+	list-style-type: none;
+	list-style-position: outside;
+	margin-left: 0;
+}
+li .test-result-notice {
+	font-weight: bold;
+}
+</style>
 <div id="center-box-bg">
 	<div id="center-box-content">
 		<div class="page-header">
@@ -45,8 +55,9 @@
 				$url = 'http://lithify.me/docs/' . str_replace('\\', '/', $class);
 				$class = $enabled ? 'enabled' : 'disabled';
 				$title = $enabled ? "Adapter `{$name}` is enabled." : "Adapter `{$name}` is disabled.";
+				$check = $enabled ? '<i class="icon-ok" style="color: green;"></i>':'<i class="icon-remove" style="color: red;"></i>';
 
-				$result .= "<li><a href=\"{$url}\" title=\"{$title}\" class=\"{$class}\">{$name}</a></li>";
+				$result .= "<li>{$check} <a href=\"{$url}\" title=\"{$title}\" class=\"{$class}\">{$name}</a></li>";
 			}
 			$result .= '</ul>';
 
