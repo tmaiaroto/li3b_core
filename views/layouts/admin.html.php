@@ -62,7 +62,7 @@
 			var editors = $('textarea .ckeditor');
 			CKEDITOR.replaceAll(function(editors, config) {
 				// Allows the textarea to supply stylesheets for use in ckeditor with a data-stylesheet attribute.
-				var stylesheets = $(textarea).data('stylesheet');
+				var stylesheets = $('textarea').data('stylesheet');
 				if(stylesheets === undefined) {
 					stylesheets = ['/li3b_core/css/bootstrap.min.css', '/li3b_core/css/highlight-themes/solarized_dark.css', '/li3b_score/css/code-styles.css'];
 				}
