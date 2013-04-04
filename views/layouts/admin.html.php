@@ -8,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<?php
-		echo $this->html->style(array('/li3b_core/css/bootstrap.min.css', '/li3b_core/css/bootstrap-responsive.min.css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css', '/li3b_core/css/jquery/tipsy.css', '/li3b_core/css/admin'), array('inline' => true));
+		echo $this->html->style(array('/li3b_core/css/bootstrap.min.css', '/li3b_core/css/bootstrap-responsive.min.css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css', '/li3b_core/css/jquery/tipsy.css', '/li3b_core/css/admin'), array('inline' => true));
 	?>
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -58,53 +58,52 @@
 			CKEDITOR.plugins.addExternal( 'insertcode', '/li3b_core/js/ckeditor-plugins/insertcode/');
 			CKEDITOR.plugins.addExternal( 'codemirror', '/li3b_core/js/ckeditor-plugins/codemirror/');
 			CKEDITOR.plugins.addExternal( 'filebrowser', '/li3b_core/js/ckeditor-plugins/filebrowser/');
-			CKEDITOR.replaceAll( function( $('textarea .ckeditor'), config ) {
+			
+			var editors = $('textarea .ckeditor');
+			CKEDITOR.replaceAll(function(editors, config) {
 				// Allows the textarea to supply stylesheets for use in ckeditor with a data-stylesheet attribute.
 				var stylesheets = $(textarea).data('stylesheet');
 				if(stylesheets === undefined) {
-					stylesheets = ['/li3b_core/css/bootstrap.min.css', '/li3b_core/css/highlight-themes/solarized_dark.css', '/li3b_score/css/code-styles.css']
+					stylesheets = ['/li3b_core/css/bootstrap.min.css', '/li3b_core/css/highlight-themes/solarized_dark.css', '/li3b_score/css/code-styles.css'];
 				}
 
-		        config.contentsCss = stylesheets;
+				config.contentsCss = stylesheets;
 				config.stylesSet = [];
 				config.tabSpaces = 4;
 				config.extraPlugins = 'wordcount,mediaembed,insertcode,codemirror,filebrowser';
-		    } );
+			});
 
 			//console.dir(CKEDITOR.instances)
 			for(i in CKEDITOR.instances) {
 				CKEDITOR.instances[i].on('key', function(ev) {
 					var editor = ev.editor;
-	                var dataProcessor = editor.dataProcessor;
-	                var htmlFilter = dataProcessor && dataProcessor.htmlFilter;
-	                htmlFilter.addRules(
-	                {
-	                    elements:
-	                    {
-	                        font: function(element)
-	                        {
-	                            return false;
-	                        }
-	                    }
-	                });
+					var dataProcessor = editor.dataProcessor;
+					var htmlFilter = dataProcessor && dataProcessor.htmlFilter;
+					htmlFilter.addRules(
+					{
+						elements:
+						{
+							font: function(element) {
+								return false;
+							}
+						}
+					});
 				});
 
 				CKEDITOR.instances[i].on('instanceReady', function(ev) {
-	                var editor = ev.editor;
-	                var dataProcessor = editor.dataProcessor;
-	                var htmlFilter = dataProcessor && dataProcessor.htmlFilter;
-	                htmlFilter.addRules(
-	                {
-	                    elements:
-	                    {
-	                        font: function(element)
-	                        {
-	                            return false;
-	                        }
-	                    }
-	                });
-	            });
-
+					var editor = ev.editor;
+					var dataProcessor = editor.dataProcessor;
+					var htmlFilter = dataProcessor && dataProcessor.htmlFilter;
+					htmlFilter.addRules(
+					{
+						elements:
+						{
+							font: function(element) {
+								return false;
+							}
+						}
+					});
+				});
 
 			}
 
