@@ -78,52 +78,63 @@ class BootstrapMenu extends \lithium\template\Helper {
 				$activeIf = (isset($parent['activeIf']) && !empty($parent['activeIf'])) ? $parent['activeIf']:array();
 				$options = (isset($parent['options']) && is_array($parent['options'])) ? $parent['options']:array();
 				$sub_items = (isset($parent['subItems']) && is_array($parent['subItems'])) ? $parent['subItems']:array();
-				if($title && $url) {
-					$string .= "\t";
-
-					$matched_route = false;
-					try {
-						$matched_route = Router::match($url);
-					} catch(\Exception $e) {
-					}
-
-					// /admin is of course admin_ prefix actions
-					$activeClass = ($matched_route == $here || (strstr($here, '/admin' . $matched_route))) ? $activeClassName:'';
-
-					// This plus the Router::match() above really needs some love.
-					// Less if statements...Should be some shorter/nicer way to write it.
-					if(!empty($activeIf)) {
-						if(isset($activeIf['library']) && isset($this->_context->request()->params['library'])) {
-							if($activeIf['library'] == $this->_context->request()->params['library']) {
-							$activeClass = $activeClassName;
-							}
-						} elseif(isset($this->_context->request()->params['controller']) && (isset($activeIf['controller']) && $activeIf['controller'] == $this->_context->request()->params['controller'])) {
-							$activeClass = $activeClassName;
-						}
-					}
-
-					$string .= '<li class="dropdown ' . $activeClass . '">' . $this->_context->html->link($title, $url, $options += array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
-					// sub menu items
-					if(count($sub_items) > 0) {
-						$string .= "\n\t";
-						$string .= '<ul class="dropdown-menu">';
-						$string .= "\n";
-						foreach($sub_items as $child) {
-							$title = (isset($child['title']) && !empty($child['title'])) ? $child['title']:false;
-							$url = (isset($child['url']) && !empty($child['url'])) ? $child['url']:false;
-							$options = (isset($child['options']) && is_array($child['options'])) ? $child['options']:array();
-							if($title && $url) {
-								$string .= "\t\t";
-								$string .= '<li>' . $this->_context->html->link($title, $url, $options) . '</li>';
-								$string .= "\n";
-							}
-						}
+				if($parent == 'separator' || $parent == 'spacer' || $parent == 'divider') {
+					$string .= '<li class="divider-vertical"></li>';
+				} else {
+					if($title && $url) {
 						$string .= "\t";
-						$string .= '</ul>';
+
+						$matched_route = false;
+						try {
+							$matched_route = Router::match($url);
+						} catch(\Exception $e) {
+						}
+
+						// /admin is of course admin_ prefix actions
+						$activeClass = ($matched_route == $here || (strstr($here, '/admin' . $matched_route))) ? $activeClassName:'';
+
+						// This plus the Router::match() above really needs some love.
+						// Less if statements...Should be some shorter/nicer way to write it.
+						if(!empty($activeIf)) {
+							if(isset($activeIf['library']) && isset($this->_context->request()->params['library'])) {
+								if($activeIf['library'] == $this->_context->request()->params['library']) {
+								$activeClass = $activeClassName;
+								}
+							} elseif(isset($this->_context->request()->params['controller']) && (isset($activeIf['controller']) && $activeIf['controller'] == $this->_context->request()->params['controller'])) {
+								$activeClass = $activeClassName;
+							} elseif(isset($activeIf['url']) && $activeIf['url'] == $this->_context->request()->url) {
+								$activeClass = $activeClassName;
+							}
+						}
+
+						$string .= '<li class="dropdown ' . $activeClass . '">' . $this->_context->html->link($title, $url, $options += array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'));
+						// sub menu items
+						if(count($sub_items) > 0) {
+							$string .= "\n\t";
+							$string .= '<ul class="dropdown-menu">';
+							$string .= "\n";
+							foreach($sub_items as $child) {
+								// let any of these do it
+								if($child == 'separator' || $child == 'spacer' || $child == 'divider') {
+									$string .= '<li class="divider"></li>';
+								} else {
+									$title = (isset($child['title']) && !empty($child['title'])) ? $child['title']:false;
+									$url = (isset($child['url']) && !empty($child['url'])) ? $child['url']:false;
+									$options = (isset($child['options']) && is_array($child['options'])) ? $child['options']:array();
+									if($title && $url) {
+										$string .= "\t\t";
+										$string .= '<li>' . $this->_context->html->link($title, $url, $options) . '</li>';
+										$string .= "\n";
+									}
+								}
+							}
+							$string .= "\t";
+							$string .= '</ul>';
+							$string .= "\n";
+						}
+						$string .= '</li>';
 						$string .= "\n";
 					}
-					$string .= '</li>';
-					$string .= "\n";
 				}
 				$i++;
 			}
