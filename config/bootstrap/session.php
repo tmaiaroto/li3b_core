@@ -37,5 +37,11 @@ $config += array(
 	'flash_message' => array('adapter' => 'Php')
 );
 
+// Allow the session configuration to be set in the Libraries::add() call for li3b_core.
+$li3bCoreConfig = Libraries::get('li3b_core');
+if(isset($li3bCoreConfig['session'])) {
+	$config = $li3bCoreConfig['session'];
+}
+
 Session::config($config);
 ?>
