@@ -45,7 +45,7 @@
 	<?=$this->_render('element', 'admin_navbar', array('user' => $this->request()->user), array('library' => 'li3b_core')); ?>
 	<div class="container">
 		<?php echo $this->content(); ?>
-		<?=$this->_render('element', 'footer', array(), array('library' => 'li3b_core')); ?>
+		<?=$this->_render('element', 'admin_footer', array(), array('library' => 'li3b_core')); ?>
 	</div><!--/.container-->
 	<script type="text/javascript">
 		$(function() {
@@ -59,7 +59,7 @@
 			CKEDITOR.plugins.addExternal( 'codemirror', '/li3b_core/js/ckeditor-plugins/codemirror/');
 			CKEDITOR.plugins.addExternal( 'filebrowser', '/li3b_core/js/ckeditor-plugins/filebrowser/');
 			
-			var editors = $('textarea .ckeditor');
+			var editors = $('.ckeditor');
 			CKEDITOR.replaceAll(function(editors, config) {
 				// Allows the textarea to supply stylesheets for use in ckeditor with a data-stylesheet attribute.
 				var stylesheets = $('textarea').data('stylesheet');
