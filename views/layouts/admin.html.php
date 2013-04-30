@@ -61,6 +61,10 @@
 			
 			var editors = $('.ckeditor');
 			CKEDITOR.replaceAll(function(editors, config) {
+				// Replace only textareas with the ckeditor class.
+				if(!$(this).hasClass('ckeditor')) {
+					return false;
+				}
 				// Allows the textarea to supply stylesheets for use in ckeditor with a data-stylesheet attribute.
 				var stylesheets = $('textarea').data('stylesheet');
 				if(stylesheets === undefined) {
