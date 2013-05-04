@@ -37,3 +37,6 @@ a.help-tooltip {
 a.tip:hover {
 	text-decoration: none;
 }
+label {
+	font-weight: bold;
+}
