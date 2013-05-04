@@ -24,9 +24,11 @@ ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $
 	
 	$appCfg = Libraries::get();
 	$defaultApp = false;
+	$defaultLibrary = null;
 	foreach($appCfg as $library) {
 		if($library['default'] === true) {
 			$defaultApp = $library;
+			$defaultLibrary = key($library);
 		}
 	}
 	
@@ -37,7 +39,7 @@ ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $
 	}
 	
 	// If the error templates don't exist use li3b_core's.
-	$error_library = (file_exists($defaultApp['path'] . '/views/layouts/' . $error_layout . '.html.php') && file_exists($defaultApp['path'] . '/views/_errors/' . $error_template . '.html.php')) ? null:'li3b_core';
+	$error_library = (file_exists($defaultApp['path'] . '/views/layouts/' . $error_layout . '.html.php') && file_exists($defaultApp['path'] . '/views/_errors/' . $error_template . '.html.php')) ? $defaultLibrary:'li3b_core';
 	
 	Media::render($response, compact('info', 'params'), array(
 		'library' => $error_library,
