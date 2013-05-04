@@ -28,7 +28,7 @@ ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $
 	}
 	
 	Media::render($response, compact('info', 'params'), array(
-		'library' => 'li3b_core',
+		// 'library' => 'li3b_core',
 		'controller' => '_errors',
 		'template' => $error_template,
 		'layout' => $error_layout,
