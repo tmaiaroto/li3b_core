@@ -25,10 +25,10 @@ ErrorHandler::apply('lithium\action\Dispatcher::run', array(), function($info, $
 	$appCfg = Libraries::get();
 	$defaultApp = false;
 	$defaultLibrary = null;
-	foreach($appCfg as $library) {
+	foreach($appCfg as $k => $library) {
 		if($library['default'] === true) {
 			$defaultApp = $library;
-			$defaultLibrary = key($library);
+			$defaultLibrary = $k;
 		}
 	}
 	
