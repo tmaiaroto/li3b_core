@@ -1,12 +1,12 @@
 [submodule "util/lessphp"]
 	path = util/lessphp
-	url = git://github.com/leafo/lessphp.git
+	url = https://github.com/leafo/lessphp.git
 [submodule "webroot/font-awesome"]
 	path = webroot/font-awesome
-	url = git://github.com/FortAwesome/Font-Awesome.git
+	url = https://github.com/FortAwesome/Font-Awesome.git
 [submodule "webroot/ckeditor"]
 	path = webroot/ckeditor
-	url = git@github.com:ckeditor/ckeditor-releases.git
+	url = https://github.com/ckeditor/ckeditor-releases.git
 [submodule "webroot/highlight"]
 	path = webroot/highlight
-	url = git@github.com:isagalaev/highlight.js.git
+	url = https://github.com/isagalaev/highlight.js.git
