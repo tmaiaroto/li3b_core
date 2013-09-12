@@ -1,0 +1,18 @@
+{
+	"name": "tmaiaroto/li3b_core",
+        "type": "lithium-library",
+	"description": "A core library of various Lithium projects that sets up a few base classes.",
+	"keywords": ["lithium", "bootstrap", "li3b", "blackprint"],
+	"homepage": "http://github.com/tmaiaroto/li3b_core",
+	"license": "MIT License",
+	"authors": [
+		{
+			"name": "Shift8Creative",
+			"homepage": "http://www.shift8creative.com"
+		}
+	],
+	"require": {
+		"php": ">=5.3.6",
+                "composer/installers": "*"
+	}
+}
