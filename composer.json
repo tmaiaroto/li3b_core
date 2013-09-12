@@ -12,6 +12,7 @@
 		}
 	],
 	"require": {
-                "composer/installers": "*"
+                "composer/installers": "*",
+                "michaelhue/li3_flash_message": "dev-master"
 	}
 }
