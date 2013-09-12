@@ -1,6 +1,6 @@
 {
 	"name": "tmaiaroto/li3b_core",
-        "type": "li3-libraries",
+        "type": "lithium-library",
 	"description": "A core library of various Lithium projects that sets up a few base classes.",
 	"keywords": ["lithium", "bootstrap", "li3b", "blackprint"],
 	"homepage": "http://github.com/tmaiaroto/li3b_core",
@@ -12,7 +12,6 @@
 		}
 	],
 	"require": {
-		"php": ">=5.3.6",
-                "joseym/li3_installer": "master"
+                "composer/installers": "*"
 	}
 }
